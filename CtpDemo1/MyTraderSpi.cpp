@@ -31,9 +31,14 @@ TThostFtdcOrderRefType ORDER_REF;   // 报单引用
 
 void CTraderSpi::OnFrontConnected()
 {
-    cerr << "--->>> " << "OnFrontConnected" << endl;
+    cout << "--->>> " << "OnFrontConnected" << endl;
     ///用户登录请求
     ReqUserLogin();
+}
+void CTraderSpi::OnFrontDisconnected(int nReason)
+{
+    cerr << "--->>> " << "OnFrontDisconnected" << endl;
+    cerr << "--->>> Reason = " << nReason << endl;
 }
 
 void CTraderSpi::ReqUserLogin()
@@ -47,8 +52,31 @@ void CTraderSpi::ReqUserLogin()
     cerr << "--->>> 发送用户登录请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
-void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+bool CTraderSpi::IsErrorRspInfo(const CThostFtdcRspInfoField* const pRspInfo) const
 {
+    // 如果0 != ErrorID, 说明收到了错误的响应
+    bool bResult = ((pRspInfo) && (pRspInfo->ErrorID != 0));
+    if (bResult)
+        cerr << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
+    return bResult;
+}
+
+void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
+{
+    cerr << "--->>> " << "OnRspUserLogin" << endl;
+    if (bIsLast && !IsErrorRspInfo(pRspInfo))
+    {
+        // 保存会话参数
+        FRONT_ID = pRspUserLogin->FrontID;
+        SESSION_ID = pRspUserLogin->SessionID;
+        int iNextOrderRef = atoi(pRspUserLogin->MaxOrderRef);
+        iNextOrderRef++;
+        sprintf(ORDER_REF, "%d", iNextOrderRef);
+        // 获取当前交易日
+        cerr << "--->>> 获取当前交易日 = " << pUserApi->GetTradingDay() << endl;
+        // 投资者结算结果确认
+        // ReqSettlementInfoConfirm();
+    }
     if (nullptr != pRspInfo)
     {
         if (0 == pRspInfo->ErrorID)
@@ -67,11 +95,12 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CTho
         }
         else
         {
+            std::cout << "Error !!! pRspUserLogin is nullptr" << std::endl;
         }
     }
     else
     {
-            std::cout << "Error !!! pRspInfo is nullptr" << pRspInfo->ErrorMsg << std::endl;
+            std::cout << "Error !!! pRspInfo is nullptr" << std::endl;
     }
     return;
 }
@@ -94,4 +123,5 @@ void CTraderSpi::ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const 
         std::cout << "user: " << pRspUserLogin->UserID << std::endl;
         std::cout << "system name: " << pRspUserLogin->SystemName << std::endl;
     }
+    return;
 }
