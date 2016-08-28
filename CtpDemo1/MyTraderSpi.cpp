@@ -1,5 +1,9 @@
 #include "MyTraderSpi.h"
 
+#ifdef _linux
+#include <string.h>
+#endif
+
 // USER_API²ÎÊý
 extern CThostFtdcTraderApi* pUserApi;
 
