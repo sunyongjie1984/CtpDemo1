@@ -7,4 +7,4 @@ main.o: main.cpp
 MyTraderSpi.o: MyTraderSpi.cpp
 	g++ -c ${cflag} MyTraderSpi.cpp
 clean :
-	rm -rf *.o CtpDemo1 *.dSYM
+	rm -rf *.o CtpDemo1 *.dSYM *.log *.con
