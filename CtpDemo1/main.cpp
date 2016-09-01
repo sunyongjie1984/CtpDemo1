@@ -1,5 +1,12 @@
 #include <iostream>
 #include "MyTraderSpi.h"
+#ifdef _linux
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <signal.h>
+#endif
 
 // UserApi对象
 CThostFtdcTraderApi* pUserApi;
@@ -16,9 +23,20 @@ TThostFtdcPriceType LIMIT_PRICE = 38850;               // 价格
 
 // 请求编号
 int iRequestID = 0;
+/**
+ *  * functions to handle the signal of SIGUSR1
+ *   * if the value of static variable iExtFlag is not equal zero, this func will exit without waiting for the main function to do to other things.
+ *    */
+/*void sTerminate()
+{
+    printf( "Get a SIGUSR1 signal!\n" );
+    return;
+}
+*/
 
 int main()
 {
+    // sigset(SIGUSR1, sTerminate);
     // 初始化UserApi
     pUserApi = CThostFtdcTraderApi::CreateFtdcTraderApi(); // 创建UserApi
     CTraderSpi* pUserSpi = new CTraderSpi();
