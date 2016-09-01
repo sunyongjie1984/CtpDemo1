@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #endif
 
 using std::cerr;
@@ -99,6 +100,7 @@ void CTraderSpi::ReqSettlementInfoConfirm()
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
+    cerr << "iRequestID=: " << iRequestID << endl;
     int iResult = pUserApi->ReqSettlementInfoConfirm(&req, ++iRequestID);
     cerr << "--->>> 投资者结算结果确认: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
@@ -117,6 +119,7 @@ void CTraderSpi::ReqQryInstrument()
     CThostFtdcQryInstrumentField req;
     memset(&req, 0, sizeof(req));
     strcpy(req.InstrumentID, INSTRUMENT_ID);
+    cerr << "iRequestID=: " << iRequestID << endl;
     int iResult = pUserApi->ReqQryInstrument(&req, ++iRequestID);
     cerr << "--->>> 请求查询合约: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
@@ -137,6 +140,7 @@ void CTraderSpi::ReqQryTradingAccount()
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
+    cerr << "iRequestID=: " << iRequestID << endl;
     int iResult = pUserApi->ReqQryTradingAccount(&req, ++iRequestID);
     cerr << "--->>> 请求查询资金账户: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
