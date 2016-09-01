@@ -3,6 +3,8 @@
 
 #ifdef _linux
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #endif
 
 using std::cerr;
@@ -63,7 +65,7 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
         // 投资者结算结果确认
         ReqSettlementInfoConfirm();
     }
-    if (nullptr != pRspInfo)
+    if (NULL != pRspInfo)
     {
         if (0 == pRspInfo->ErrorID)
         {
@@ -75,7 +77,7 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
             std::cout << "Error ID = " << pRspInfo->ErrorID << std::endl;
             std::cout << "Error Msg = " << pRspInfo->ErrorMsg << std::endl;
         }
-        if (nullptr != pRspUserLogin)
+        if (NULL != pRspUserLogin)
         {
             ShowRspUserLoginField(pRspUserLogin);
         }
@@ -336,7 +338,7 @@ bool CTraderSpi::IsTradingOrder(CThostFtdcOrderField *pOrder)
 
 void CTraderSpi::ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const pRspUserLogin) const
 {
-    if (nullptr != pRspUserLogin)
+    if (NULL != pRspUserLogin)
     {
         std::cout << "date: " << pRspUserLogin->TradingDay << std::endl;
         std::cout << "login time: " << pRspUserLogin->LoginTime << std::endl;

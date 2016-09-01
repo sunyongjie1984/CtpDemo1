@@ -1,4 +1,5 @@
-cflag = -g -Wall -std=c++11 -D _linux
+#cflag = -g -Wall -std==c++11 -D _linux
+cflag = -g -Wall -D _linux
 all: CtpDemo1
 CtpDemo1: MyTraderSpi.o main.o
 	g++ -o CtpDemo1 ${cflag} main.o MyTraderSpi.o -lthosttraderapi -L .
