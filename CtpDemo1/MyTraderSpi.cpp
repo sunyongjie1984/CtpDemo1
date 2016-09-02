@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#else
+#include <Windows.h>
 #endif
 
 using std::cerr;
@@ -32,6 +34,15 @@ extern int iRequestID;
 TThostFtdcFrontIDType FRONT_ID;     // 前置编号
 TThostFtdcSessionIDType SESSION_ID; // 会话编号
 TThostFtdcOrderRefType ORDER_REF;   // 报单引用
+
+void MySleep(const int n)
+{
+#ifdef _linux
+    sleep(n);
+#else
+    Sleep(n * 1000);
+#endif
+}
 
 void CTraderSpi::OnFrontConnected()
 {
