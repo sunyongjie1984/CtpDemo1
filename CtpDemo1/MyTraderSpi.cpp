@@ -64,6 +64,7 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
         sprintf(ORDER_REF, "%d", iNextOrderRef);
         // 获取当前交易日
         cerr << "--->>> 获取当前交易日 = " << pUserApi->GetTradingDay() << endl;
+        sleep(1);
         // 投资者结算结果确认
         ReqSettlementInfoConfirm();
     }
@@ -111,6 +112,7 @@ void CTraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField
     cerr << "--->>> " << "OnRspSettlementInfoConfirm" << endl;
     if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
+        sleep(1);
         // 请求查询合约
         ReqQryInstrument();
     }
@@ -130,6 +132,7 @@ void CTraderSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CTho
     cerr << "--->>> " << "OnRspQryInstrument" << endl;
     if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
+        sleep(1);
         //请求查询合约
         ReqQryTradingAccount();
     }
@@ -151,6 +154,7 @@ void CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingA
     cerr << "--->>> " << "OnRspQryTradingAccount" << endl;
     if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
+        sleep(1);
         // 请求查询投资者持仓
         ReqQryInvestorPosition();
     }
@@ -172,6 +176,7 @@ void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
     cerr << "--->>> " << "OnRspQryInvestorPosition" << endl;
     if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
+        sleep(1);
         // 报单录入请求
         ReqOrderInsert();
     }
