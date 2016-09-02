@@ -243,3 +243,8 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/CtpDemo1/TradingDay.con
+/CtpDemo1/QueryRsp.con
+/CtpDemo1/Public.con
+/CtpDemo1/Private.con
+/CtpDemo1/DialogRsp.con

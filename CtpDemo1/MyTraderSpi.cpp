@@ -73,7 +73,10 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
         int iNextOrderRef = atoi(pRspUserLogin->MaxOrderRef);
         iNextOrderRef++;
         sprintf(ORDER_REF, "%d", iNextOrderRef);
-        // 获取当前交易日
+		cerr << "--->>> FrontID = " << FRONT_ID << endl;
+		cerr << "--->>> SESSION_ID = " << SESSION_ID << endl;
+		cerr << "--->>> MaxOrderRef = " << pRspUserLogin->MaxOrderRef << endl;
+		// 获取当前交易日
         cerr << "--->>> 获取当前交易日 = " << pUserApi->GetTradingDay() << endl;
         MySleep(1);
         // 投资者结算结果确认
