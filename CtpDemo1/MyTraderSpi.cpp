@@ -90,7 +90,7 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
     {
         if (0 == pRspInfo->ErrorID)
         {
-            std::cout << "log in successfully" << std::endl;
+            std::cout << "--->>> log in successfully" << std::endl;
         }
         else
         {
@@ -396,19 +396,19 @@ void CTraderSpi::ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const 
 	cout << "--->>> " << __FUNCTION__ << endl;
     if (NULL != pRspUserLogin)
     {
-        std::cout << "date: " << pRspUserLogin->TradingDay << std::endl;
-        std::cout << "login time: " << pRspUserLogin->LoginTime << std::endl;
-        std::cout << "broker: " << pRspUserLogin->BrokerID << std::endl;
-        std::cout << "user: " << pRspUserLogin->UserID << std::endl;
-        std::cout << "system name: " << pRspUserLogin->SystemName << std::endl;
+        std::cout << "--->>> date: " << pRspUserLogin->TradingDay << std::endl;
+        std::cout << "--->>> login time: " << pRspUserLogin->LoginTime << std::endl;
+        std::cout << "--->>> broker: " << pRspUserLogin->BrokerID << std::endl;
+        std::cout << "--->>> user: " << pRspUserLogin->UserID << std::endl;
+        std::cout << "--->>> system name: " << pRspUserLogin->SystemName << std::endl;
     }
     else
     {
-        std::cout << "date: " << pRspUserLogin->TradingDay << std::endl;
-        std::cout << "login time: " << pRspUserLogin->LoginTime << std::endl;
-        std::cout << "broker: " << pRspUserLogin->BrokerID << std::endl;
-        std::cout << "user: " << pRspUserLogin->UserID << std::endl;
-        std::cout << "system name: " << pRspUserLogin->SystemName << std::endl;
+        std::cout << "--->>> date: " << pRspUserLogin->TradingDay << std::endl;
+        std::cout << "--->>> login time: " << pRspUserLogin->LoginTime << std::endl;
+        std::cout << "--->>> broker: " << pRspUserLogin->BrokerID << std::endl;
+        std::cout << "--->>> user: " << pRspUserLogin->UserID << std::endl;
+        std::cout << "--->>> system name: " << pRspUserLogin->SystemName << std::endl;
     }
     return;
 }
