@@ -9,3 +9,4 @@ break CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField*, CTh
 break CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField*, CThostFtdcRspInfoField*, int, bool)
 break CTraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField*, CThostFtdcRspInfoField*, int, bool)
 break CTraderSpi::IsTradingOrder
+break CTraderSpi::OnRspQryOrder

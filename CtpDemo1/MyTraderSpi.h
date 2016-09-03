@@ -39,6 +39,9 @@ public:
 
     ///成交通知
     virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
+
+    // 请求查询报单响应
+    virtual void OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 private:
     // 用户登录请求
     void ReqUserLogin();
@@ -54,6 +57,9 @@ private:
     void ReqOrderInsert();
     // 报单操作请求
     void ReqOrderAction(CThostFtdcOrderField *pOrder);
+    ///请求查询报单
+    void ReqQryOrder();
+
 
     // 是否收到成功的响应
     bool IsErrorRspInfo(const CThostFtdcRspInfoField* const pRspInfo) const;
