@@ -157,8 +157,8 @@ void CTraderSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CTho
 	cout << "--->>> " << __FUNCTION__ << endl;
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
-		cout << "InstrumentID=: " << pInstrument->InstrumentID << endl;
-		cout << "InstrumentName=: " << pInstrument->InstrumentName << endl;
+		cout << "--->>> InstrumentID=: " << pInstrument->InstrumentID << endl;
+		cout << "--->>> InstrumentName=: " << pInstrument->InstrumentName << endl;
 		MySleep(1);
         // 请求查询资金账户
         ReqQryTradingAccount();
