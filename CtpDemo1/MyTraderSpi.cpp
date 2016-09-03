@@ -150,7 +150,7 @@ void CTraderSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CTho
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
         MySleep(1);
-        //请求查询合约
+        // 请求查询资金账户
         ReqQryTradingAccount();
     }
 }
