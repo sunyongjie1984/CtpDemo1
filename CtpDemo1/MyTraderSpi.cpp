@@ -219,7 +219,7 @@ void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
 // 报单录入请求
 void CTraderSpi::ReqOrderInsert()
 {
-	cout << "--->>> " << __FUNCTION__ << endl;
+    cout << "--->>> " << __FUNCTION__ << endl;
     CThostFtdcInputOrderField req;
     memset(&req, 0, sizeof(req));
     // 经纪公司代码
@@ -334,13 +334,18 @@ void CTraderSpi::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAc
 // 报单通知
 void CTraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
-	cout << "--->>> " << __FUNCTION__ << endl;
-	if (IsMyOrder(pOrder))
+    cout << "--->>> " << __FUNCTION__ << endl;
+    if (IsMyOrder(pOrder))
     {
+        cout << "--->>> is my order" << endl;
         if (IsTradingOrder(pOrder))
             ReqOrderAction(pOrder);
         else if (pOrder->OrderStatus == THOST_FTDC_OST_Canceled)
             cout << "--->>> 撤单成功" << endl;
+    }
+    else
+    {
+        cout << "--->>> not my order" << __FUNCTION__ << endl;
     }
 }
 
@@ -379,16 +384,16 @@ bool CTraderSpi::IsErrorRspInfo(const CThostFtdcRspInfoField* const pRspInfo) co
 
 bool CTraderSpi::IsMyOrder(CThostFtdcOrderField *pOrder)
 {
-        return ((pOrder->FrontID == FRONT_ID) &&
-                            (pOrder->SessionID == SESSION_ID) &&
-                                        (strcmp(pOrder->OrderRef, ORDER_REF) == 0));
+    return ((pOrder->FrontID == FRONT_ID) &&
+            (pOrder->SessionID == SESSION_ID) &&
+            (strcmp(pOrder->OrderRef, ORDER_REF) == 0));
 }
 
 bool CTraderSpi::IsTradingOrder(CThostFtdcOrderField *pOrder)
 {
-        return ((pOrder->OrderStatus != THOST_FTDC_OST_PartTradedNotQueueing) &&
-                            (pOrder->OrderStatus != THOST_FTDC_OST_Canceled) &&
-                                        (pOrder->OrderStatus != THOST_FTDC_OST_AllTraded));
+    return ((pOrder->OrderStatus != THOST_FTDC_OST_PartTradedNotQueueing) &&
+            (pOrder->OrderStatus != THOST_FTDC_OST_Canceled) &&
+            (pOrder->OrderStatus != THOST_FTDC_OST_AllTraded));
 }
 
 void CTraderSpi::ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const pRspUserLogin) const
