@@ -1,1 +1,1 @@
-export LD_LIBRARY_PATH+=:./linux
+export LD_LIBRARY_PATH=.
