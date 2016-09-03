@@ -46,25 +46,26 @@ void MySleep(const int n)
 
 void CTraderSpi::OnFrontConnected()
 {
-    cout << "--->>> " << "OnFrontConnected" << endl;
+    cout << "--->>> " << __FUNCTION__ << endl;
     ///用户登录请求
     ReqUserLogin();
 }
 
 void CTraderSpi::ReqUserLogin()
 {
+    cout << "--->>> " << __FUNCTION__ << endl;
     CThostFtdcReqUserLoginField req;
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.UserID, INVESTOR_ID);
     strcpy(req.Password, PASSWORD);
     int iResult = pUserApi->ReqUserLogin(&req, ++iRequestID);
-    cerr << "--->>> 发送用户登录请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    cout << "--->>> 发送用户登录请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
 void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
-    cerr << "--->>> " << "OnRspUserLogin" << endl;
+    cout << "--->>> " << __FUNCTION__ << endl;
     if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
         // 保存会话参数
@@ -73,11 +74,11 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
         int iNextOrderRef = atoi(pRspUserLogin->MaxOrderRef);
         iNextOrderRef++;
         sprintf(ORDER_REF, "%d", iNextOrderRef);
-		cerr << "--->>> FrontID = " << FRONT_ID << endl;
-		cerr << "--->>> SESSION_ID = " << SESSION_ID << endl;
-		cerr << "--->>> MaxOrderRef = " << pRspUserLogin->MaxOrderRef << endl;
+		cout << "--->>> FrontID = " << FRONT_ID << endl;
+		cout << "--->>> SESSION_ID = " << SESSION_ID << endl;
+		cout << "--->>> MaxOrderRef = " << pRspUserLogin->MaxOrderRef << endl;
 		// 获取当前交易日
-        cerr << "--->>> 获取当前交易日 = " << pUserApi->GetTradingDay() << endl;
+        cout << "--->>> 获取当前交易日 = " << pUserApi->GetTradingDay() << endl;
         MySleep(1);
         // 投资者结算结果确认
         ReqSettlementInfoConfirm();
@@ -112,19 +113,20 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
 
 void CTraderSpi::ReqSettlementInfoConfirm()
 {
+	cout << "--->>> " << __FUNCTION__ << endl;
     CThostFtdcSettlementInfoConfirmField req;
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
-    cerr << "iRequestID=: " << iRequestID << endl;
+    cout << "iRequestID=: " << iRequestID << endl;
     int iResult = pUserApi->ReqSettlementInfoConfirm(&req, ++iRequestID);
-    cerr << "--->>> 投资者结算结果确认: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    cout << "--->>> 发送投资者结算结果确认: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
 void CTraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    cerr << "--->>> " << "OnRspSettlementInfoConfirm" << endl;
-    if (bIsLast && !IsErrorRspInfo(pRspInfo))
+	cout << "--->>> " << __FUNCTION__ << endl;
+	if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
         MySleep(1);
         // 请求查询合约
@@ -133,18 +135,19 @@ void CTraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField
 }
 void CTraderSpi::ReqQryInstrument()
 {
+	cout << "--->>> " << __FUNCTION__ << endl;
     CThostFtdcQryInstrumentField req;
     memset(&req, 0, sizeof(req));
     strcpy(req.InstrumentID, INSTRUMENT_ID);
-    cerr << "iRequestID=: " << iRequestID << endl;
+    cout << "iRequestID=: " << iRequestID << endl;
     int iResult = pUserApi->ReqQryInstrument(&req, ++iRequestID);
-    cerr << "--->>> 请求查询合约: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    cout << "--->>> 发送请求查询合约: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
 void CTraderSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    cerr << "--->>> " << "OnRspQryInstrument" << endl;
-    if (bIsLast && !IsErrorRspInfo(pRspInfo))
+	cout << "--->>> " << __FUNCTION__ << endl;
+	if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
         MySleep(1);
         //请求查询合约
@@ -154,19 +157,20 @@ void CTraderSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CTho
 
 void CTraderSpi::ReqQryTradingAccount()
 {
+	cout << "--->>> " << __FUNCTION__ << endl;
     CThostFtdcQryTradingAccountField req;
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
-    cerr << "iRequestID=: " << iRequestID << endl;
+    cout << "iRequestID=: " << iRequestID << endl;
     int iResult = pUserApi->ReqQryTradingAccount(&req, ++iRequestID);
-    cerr << "--->>> 请求查询资金账户: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    cout << "--->>> 发送请求查询资金账户: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
 void CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    cerr << "--->>> " << "OnRspQryTradingAccount" << endl;
-    if (bIsLast && !IsErrorRspInfo(pRspInfo))
+	cout << "--->>> " << __FUNCTION__ << endl;
+	if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
         MySleep(1);
         // 请求查询投资者持仓
@@ -176,19 +180,20 @@ void CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingA
 
 void CTraderSpi::ReqQryInvestorPosition()
 {
+	cout << "--->>> " << __FUNCTION__ << endl;
     CThostFtdcQryInvestorPositionField req;
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
     strcpy(req.InstrumentID, INSTRUMENT_ID);
     int iResult = pUserApi->ReqQryInvestorPosition(&req, ++iRequestID);
-    cerr << "--->>> 请求查询投资者持仓: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    cout << "--->>> 发送请求查询投资者持仓: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
 void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    cerr << "--->>> " << "OnRspQryInvestorPosition" << endl;
-    if (bIsLast && !IsErrorRspInfo(pRspInfo))
+	cout << "--->>> " << __FUNCTION__ << endl;
+	if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
         MySleep(1);
         // 报单录入请求
@@ -198,6 +203,7 @@ void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
 
 void CTraderSpi::ReqOrderInsert()
 {
+	cout << "--->>> " << __FUNCTION__ << endl;
     CThostFtdcInputOrderField req;
     memset(&req, 0, sizeof(req));
     // 经纪公司代码
@@ -246,15 +252,16 @@ void CTraderSpi::ReqOrderInsert()
     req.UserForceClose = 0;
 
     int iResult = pUserApi->ReqOrderInsert(&req, ++iRequestID);
-    cerr << "--->>> 报单录入请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    cout << "--->>> 发送报单录入请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 void CTraderSpi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    cerr << "--->>> " << "OnRspOrderInsert" << endl;
-    IsErrorRspInfo(pRspInfo);
+	cout << "--->>> " << __FUNCTION__ << endl;
+	IsErrorRspInfo(pRspInfo);
 }
 void CTraderSpi::ReqOrderAction(CThostFtdcOrderField *pOrder)
 {
+	cout << "--->>> " << __FUNCTION__ << endl;
     static bool ORDER_ACTION_SENT = false;      //是否发送了报单
     if (ORDER_ACTION_SENT)
         return;
@@ -291,20 +298,20 @@ void CTraderSpi::ReqOrderAction(CThostFtdcOrderField *pOrder)
     strcpy(req.InstrumentID, pOrder->InstrumentID);
 
     int iResult = pUserApi->ReqOrderAction(&req, ++iRequestID);
-    cerr << "--->>> 报单操作请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    cout << "--->>> 发送报单操作请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
     ORDER_ACTION_SENT = true;
 }
 void CTraderSpi::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    cerr << "--->>> " << "OnRspOrderAction" << endl;
-    IsErrorRspInfo(pRspInfo);
+	cout << "--->>> " << __FUNCTION__ << endl;
+	IsErrorRspInfo(pRspInfo);
 }
 
 // 报单通知
 void CTraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
-    cerr << "--->>> " << "OnRtnOrder"  << endl;
-    if (IsMyOrder(pOrder))
+	cout << "--->>> " << __FUNCTION__ << endl;
+	if (IsMyOrder(pOrder))
     {
         if (IsTradingOrder(pOrder))
             ReqOrderAction(pOrder);
@@ -316,25 +323,25 @@ void CTraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
 // 成交通知
 void CTraderSpi::OnRtnTrade(CThostFtdcTradeField *pTrade)
 {
-    cerr << "--->>> " << "OnRtnTrade"  << endl;
+	cout << "--->>> " << __FUNCTION__ << endl;
 }
 
 void CTraderSpi::OnFrontDisconnected(int nReason)
 {
-    cerr << "--->>> " << "OnFrontDisconnected" << endl;
-    cerr << "--->>> Reason = " << nReason << endl;
+	cout << "--->>> " << __FUNCTION__ << endl;
+	cout << "--->>> Reason = " << nReason << endl;
 }
 
 void CTraderSpi::OnHeartBeatWarning(int nTimeLapse)
 {
-    cerr << "--->>> " << "OnHeartBeatWarning" << endl;
-    cerr << "--->>> nTimerLapse = " << nTimeLapse << endl;
+	cout << "--->>> " << __FUNCTION__ << endl;
+	cout << "--->>> nTimerLapse = " << nTimeLapse << endl;
 }
 
 void CTraderSpi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    cerr << "--->>> " << "OnRspError" << endl;
-    IsErrorRspInfo(pRspInfo);
+	cout << "--->>> " << __FUNCTION__ << endl;
+	IsErrorRspInfo(pRspInfo);
 }
 
 bool CTraderSpi::IsErrorRspInfo(const CThostFtdcRspInfoField* const pRspInfo) const
@@ -342,7 +349,7 @@ bool CTraderSpi::IsErrorRspInfo(const CThostFtdcRspInfoField* const pRspInfo) co
     // 如果0 != ErrorID, 说明收到了错误的响应
     bool bResult = ((pRspInfo) && (pRspInfo->ErrorID != 0));
     if (bResult)
-        cerr << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
+        cout << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
     return bResult;
 }
 
@@ -362,6 +369,7 @@ bool CTraderSpi::IsTradingOrder(CThostFtdcOrderField *pOrder)
 
 void CTraderSpi::ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const pRspUserLogin) const
 {
+	cout << "--->>> " << __FUNCTION__ << endl;
     if (NULL != pRspUserLogin)
     {
         std::cout << "date: " << pRspUserLogin->TradingDay << std::endl;
