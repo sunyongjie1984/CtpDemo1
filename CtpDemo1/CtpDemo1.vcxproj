@@ -133,6 +133,9 @@
     <Library Include="thosttraderapi.lib" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gdbinit" />
+    <None Include="bp1.bp" />
+    <None Include="env" />
     <None Include="makefile" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
