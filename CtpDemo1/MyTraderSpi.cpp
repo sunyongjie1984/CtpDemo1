@@ -61,6 +61,8 @@ void CTraderSpi::ReqUserLogin()
     strcpy(req.UserID, INVESTOR_ID);
     strcpy(req.Password, PASSWORD);
     int iResult = pUserApi->ReqUserLogin(&req, ++iRequestID);
+    cout << "--->>> iRequestID=: " << iRequestID << endl;
+	cout << "--->>> iResult =: " << iResult << endl;
     cout << "--->>> 发送用户登录请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
@@ -120,8 +122,9 @@ void CTraderSpi::ReqSettlementInfoConfirm()
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
-    cout << "iRequestID=: " << iRequestID << endl;
     int iResult = pUserApi->ReqSettlementInfoConfirm(&req, ++iRequestID);
+    cout << "--->>> iRequestID=: " << iRequestID << endl;
+	cout << "--->>> iResult =: " << iResult << endl;
     cout << "--->>> 发送投资者结算结果确认: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
@@ -143,8 +146,9 @@ void CTraderSpi::ReqQryInstrument()
     CThostFtdcQryInstrumentField req;
     memset(&req, 0, sizeof(req));
     strcpy(req.InstrumentID, INSTRUMENT_ID);
-    cout << "iRequestID=: " << iRequestID << endl;
     int iResult = pUserApi->ReqQryInstrument(&req, ++iRequestID);
+    cout << "--->>> iRequestID=: " << iRequestID << endl;
+	cout << "--->>> iResult =: " << iResult << endl;
     cout << "--->>> 发送请求查询合约: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
@@ -169,8 +173,9 @@ void CTraderSpi::ReqQryTradingAccount()
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
-    cout << "iRequestID=: " << iRequestID << endl;
     int iResult = pUserApi->ReqQryTradingAccount(&req, ++iRequestID);
+    cout << "--->>> iRequestID=: " << iRequestID << endl;
+	cout << "--->>> iResult =: " << iResult << endl;
     cout << "--->>> 发送请求查询资金账户: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
@@ -195,6 +200,8 @@ void CTraderSpi::ReqQryInvestorPosition()
     strcpy(req.InvestorID, INVESTOR_ID);
     strcpy(req.InstrumentID, INSTRUMENT_ID);
     int iResult = pUserApi->ReqQryInvestorPosition(&req, ++iRequestID);
+    cout << "--->>> iRequestID=: " << iRequestID << endl;
+	cout << "--->>> iResult =: " << iResult << endl;
     cout << "--->>> 发送请求查询投资者持仓: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
@@ -261,6 +268,8 @@ void CTraderSpi::ReqOrderInsert()
     req.UserForceClose = 0;
 
     int iResult = pUserApi->ReqOrderInsert(&req, ++iRequestID);
+    cout << "--->>> iRequestID=: " << iRequestID << endl;
+	cout << "--->>> iResult =: " << iResult << endl;
     cout << "--->>> 发送报单录入请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
@@ -310,6 +319,8 @@ void CTraderSpi::ReqOrderAction(CThostFtdcOrderField *pOrder)
     strcpy(req.InstrumentID, pOrder->InstrumentID);
 
     int iResult = pUserApi->ReqOrderAction(&req, ++iRequestID);
+    cout << "--->>> iRequestID=: " << iRequestID << endl;
+	cout << "--->>> iResult =: " << iResult << endl;
     cout << "--->>> 发送报单操作请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
     ORDER_ACTION_SENT = true;
 }

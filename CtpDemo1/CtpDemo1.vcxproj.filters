@@ -45,4 +45,7 @@
   <ItemGroup>
     <Library Include="thosttraderapi.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="makefile" />
+  </ItemGroup>
 </Project>
