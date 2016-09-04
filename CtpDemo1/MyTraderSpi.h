@@ -45,11 +45,13 @@ public:
     ///请求查询报单
     void ReqQryOrder();
     // 报单录入请求
-    void ReqOrderInsert();
+	void ReqOrderInsert(const char* const, const double, const int);
     // 报单操作请求
     void ReqOrderAction(CThostFtdcOrderField *pOrder);
 	// 报单操作请求--撤单
 	void ReqOrderActionAFDelete(CThostFtdcOrderField *pOrder);
+    // 请求查询资金账户
+    void ReqQryTradingAccount();
 private:
     // 用户登录请求
     void ReqUserLogin();
@@ -57,8 +59,6 @@ private:
     void ReqSettlementInfoConfirm();
     // 请求查询合约
     void ReqQryInstrument();
-    // 请求查询资金账户
-    void ReqQryTradingAccount();
     // 请求查询投资者持仓
     void ReqQryInvestorPosition();
 

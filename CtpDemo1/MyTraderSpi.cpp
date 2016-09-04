@@ -127,8 +127,6 @@ void CTraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
         MySleep(1);
-        // 请求查询合约
-        // ReqQryInstrument();
     }
 }
 
@@ -153,8 +151,6 @@ void CTraderSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CTho
 		cout << "--->>> InstrumentID=: " << pInstrument->InstrumentID << endl;
 		cout << "--->>> InstrumentName=: " << pInstrument->InstrumentName << endl;
 		MySleep(1);
-        // 请求查询资金账户
-        ReqQryTradingAccount();
     }
 }
 
@@ -177,9 +173,9 @@ void CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingA
 	cout << "--->>> " << __FUNCTION__ << endl;
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
+		cout << "--->>> pTradingAccount=: " << pTradingAccount->AccountID << " Available=: " << pTradingAccount->Available << endl;
+
         MySleep(1);
-        // 请求查询投资者持仓
-        ReqQryInvestorPosition();
     }
 }
 
@@ -204,14 +200,11 @@ void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
         MySleep(1);
-		// ReqQryOrder();
-        // 报单录入请求
-        // ReqOrderInsert();
     }
 }
 
 // 报单录入请求
-void CTraderSpi::ReqOrderInsert()
+void CTraderSpi::ReqOrderInsert(const char* const pInstrument_ID, const double price, const int amount)
 {
     cout << "--->>> " << __FUNCTION__ << endl;
     CThostFtdcInputOrderField req;
@@ -221,7 +214,7 @@ void CTraderSpi::ReqOrderInsert()
     // 投资者代码
     strcpy(req.InvestorID, INVESTOR_ID);
     // 合约代码
-    strcpy(req.InstrumentID, INSTRUMENT_ID);
+    strcpy(req.InstrumentID, pInstrument_ID);
     // 报单引用
     strcpy(req.OrderRef, ORDER_REF);
     // 用户代码
@@ -235,9 +228,9 @@ void CTraderSpi::ReqOrderInsert()
     // 组合投机套保标志
     req.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation;
     // 价格
-    req.LimitPrice = LIMIT_PRICE;
+    req.LimitPrice = price;
     // 数量: 1
-    req.VolumeTotalOriginal = 1;
+    req.VolumeTotalOriginal = amount;
     // 有效期类型: 当日有效
     req.TimeCondition = THOST_FTDC_TC_GFD;
     // GTD日期
@@ -477,22 +470,17 @@ void CTraderSpi::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoFi
     static unsigned int n = 0;
     cout << "--->>> " << __FUNCTION__ << " " << n++ << " times" << endl;
     if (!IsErrorRspInfo(pRspInfo))
-    {
-		if (THOST_FTDC_OSS_CancelRejected != pOrder->OrderStatus)
-		{
-			cout << "--->>> " << nRequestID << " " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->BrokerID << " " << pOrder->InvestorID
-				<< " " << pOrder->InstrumentID << " " << pOrder->OrderRef << " " << pOrder->OrderPriceType
-				<< " " << pOrder->Direction << " " << pOrder->LimitPrice << " " << pOrder->VolumeTotalOriginal
-				<< " " << pOrder->RequestID << pOrder->InsertDate << " " << pOrder->InsertTime << " " << pOrder->UpdateTime << endl;
-			cout << "--->>> " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->OrderRef
-				<< " " << pOrder->InstrumentID << endl;
-		}
-
-		/*
-		if (true == bIsLast)
+	{
+		cout << "--->>> " << nRequestID << " " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->BrokerID << " " << pOrder->InvestorID
+			<< " " << pOrder->InstrumentID << " " << pOrder->OrderRef << " " << pOrder->OrderPriceType
+			<< " " << pOrder->Direction << " " << pOrder->LimitPrice << " " << pOrder->VolumeTotalOriginal
+			<< " " << pOrder->RequestID << pOrder->InsertDate << " " << pOrder->InsertTime << " " << pOrder->UpdateTime << " " << pOrder->OrderStatus
+			<< " " << pOrder->StatusMsg << endl;;
+		cout << "--->>> " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->OrderRef
+			<< " " << pOrder->InstrumentID << endl;
+		if (bIsLast == true)
 		{
 			ReqOrderActionAFDelete(pOrder);
 		}
-		*/
-    }
+	}
 }
