@@ -42,6 +42,14 @@ public:
 
     // 请求查询报单响应
     virtual void OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+    ///请求查询报单
+    void ReqQryOrder();
+    // 报单录入请求
+    void ReqOrderInsert();
+    // 报单操作请求
+    void ReqOrderAction(CThostFtdcOrderField *pOrder);
+	// 报单操作请求--撤单
+	void ReqOrderActionAFDelete(CThostFtdcOrderField *pOrder);
 private:
     // 用户登录请求
     void ReqUserLogin();
@@ -53,12 +61,6 @@ private:
     void ReqQryTradingAccount();
     // 请求查询投资者持仓
     void ReqQryInvestorPosition();
-    // 报单录入请求
-    void ReqOrderInsert();
-    // 报单操作请求
-    void ReqOrderAction(CThostFtdcOrderField *pOrder);
-    ///请求查询报单
-    void ReqQryOrder();
 
 
     // 是否收到成功的响应

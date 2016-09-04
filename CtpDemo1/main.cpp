@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#else
+#include <Windows.h>
 #endif
 
 // UserApi对象
@@ -34,6 +36,15 @@ int iRequestID = 0;
 }
 */
 
+void MySleep(const int n)
+{
+#ifdef _linux
+	sleep(n);
+#else
+	Sleep(n * 1000);
+#endif
+}
+
 int main()
 {
     // sigset(SIGUSR1, sTerminate);
@@ -45,6 +56,12 @@ int main()
     pUserApi->SubscribePrivateTopic(THOST_TERT_RESTART);   // 注册私有流
     pUserApi->RegisterFront(FRONT_ADDR);                   // connect
     pUserApi->Init();
+
+	MySleep(5);
+	pUserSpi->ReqQryOrder();
+	// 报单录入请求
+	// pUserSpi->ReqOrderInsert();
+
     pUserApi->Join();
     // pUserApi->Release();
 

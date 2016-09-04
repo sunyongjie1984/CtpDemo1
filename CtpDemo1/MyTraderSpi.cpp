@@ -35,14 +35,7 @@ TThostFtdcFrontIDType FRONT_ID;     // 前置编号
 TThostFtdcSessionIDType SESSION_ID; // 会话编号
 TThostFtdcOrderRefType ORDER_REF;   // 报单引用
 
-void MySleep(const int n)
-{
-#ifdef _linux
-    sleep(n);
-#else
-    Sleep(n * 1000);
-#endif
-}
+extern void MySleep(const int n);
 
 void CTraderSpi::OnFrontConnected()
 {
@@ -135,7 +128,7 @@ void CTraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField
     {
         MySleep(1);
         // 请求查询合约
-        ReqQryInstrument();
+        // ReqQryInstrument();
     }
 }
 
@@ -211,8 +204,9 @@ void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
         MySleep(1);
+		// ReqQryOrder();
         // 报单录入请求
-        ReqOrderInsert();
+        // ReqOrderInsert();
     }
 }
 
@@ -281,6 +275,52 @@ void CTraderSpi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThost
 
 // 报单操作请求
 void CTraderSpi::ReqOrderAction(CThostFtdcOrderField *pOrder)
+{
+	cout << "--->>> " << __FUNCTION__ << endl;
+    static bool ORDER_ACTION_SENT = false;      //是否发送了报单
+    if (ORDER_ACTION_SENT)
+        return;
+
+    CThostFtdcInputOrderActionField req;
+    memset(&req, 0, sizeof(req));
+    // 经纪公司代码
+    strcpy(req.BrokerID, pOrder->BrokerID);
+    // 投资者代码
+    strcpy(req.InvestorID, pOrder->InvestorID);
+    // 报单操作引用
+    // TThostFtdcOrderActionRefType    OrderActionRef;
+    // 报单引用
+    strcpy(req.OrderRef, pOrder->OrderRef);
+    // 请求编号
+    // TThostFtdcRequestIDType RequestID;
+    // 前置编号
+    req.FrontID = FRONT_ID;
+    // 会话编号
+    req.SessionID = SESSION_ID;
+    // 交易所代码
+    // TThostFtdcExchangeIDType    ExchangeID;
+    // 报单编号
+    // TThostFtdcOrderSysIDType    OrderSysID;
+    // 操作标志
+    req.ActionFlag = THOST_FTDC_AF_Delete;
+    // 价格
+    //  TThostFtdcPriceType LimitPrice;
+    // 数量变化
+    // TThostFtdcVolumeType    VolumeChange;
+    // 用户代码
+    // TThostFtdcUserIDType    UserID;
+    // 合约代码
+    strcpy(req.InstrumentID, pOrder->InstrumentID);
+
+    int iResult = pUserApi->ReqOrderAction(&req, ++iRequestID);
+    cout << "--->>> iRequestID=: " << iRequestID << endl;
+    cout << "--->>> iResult =: " << iResult << endl;
+    cout << "--->>> 发送报单操作请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    ORDER_ACTION_SENT = true;
+}
+
+// 报单操作请求--撤单
+void CTraderSpi::ReqOrderActionAFDelete(CThostFtdcOrderField *pOrder)
 {
 	cout << "--->>> " << __FUNCTION__ << endl;
     static bool ORDER_ACTION_SENT = false;      //是否发送了报单
@@ -438,7 +478,11 @@ void CTraderSpi::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoFi
     if (!IsErrorRspInfo(pRspInfo))
     {
         MySleep(1);
-        cout << "--->>> " << nRequestID << " " << pOrder->BrokerID << " " << pOrder->InvestorID
-            << " " << pOrder->InstrumentID << endl;
+		cout << "--->>> " << nRequestID << " " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->BrokerID << " " << pOrder->InvestorID
+			<< " " << pOrder->InstrumentID << " " << pOrder->OrderRef << " " << pOrder->OrderPriceType
+			<< " " << pOrder->Direction << " " << pOrder->LimitPrice << " " << pOrder->VolumeTotalOriginal
+			<< " " << pOrder->RequestID << pOrder->InsertDate << " " << pOrder->InsertTime << " " << pOrder->UpdateTime << endl;
+		cout << "--->>> " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->OrderRef
+			<< " " << pOrder->InstrumentID << endl;
     }
 }
