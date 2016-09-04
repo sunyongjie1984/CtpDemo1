@@ -324,8 +324,8 @@ void CTraderSpi::ReqOrderActionAFDelete(CThostFtdcOrderField *pOrder)
 {
 	cout << "--->>> " << __FUNCTION__ << endl;
     static bool ORDER_ACTION_SENT = false;      //是否发送了报单
-    if (ORDER_ACTION_SENT)
-        return;
+	if (ORDER_ACTION_SENT)
+		return;
 
     CThostFtdcInputOrderActionField req;
     memset(&req, 0, sizeof(req));
@@ -340,9 +340,9 @@ void CTraderSpi::ReqOrderActionAFDelete(CThostFtdcOrderField *pOrder)
     // 请求编号
     // TThostFtdcRequestIDType RequestID;
     // 前置编号
-    req.FrontID = FRONT_ID;
+    req.FrontID = pOrder->FrontID;
     // 会话编号
-    req.SessionID = SESSION_ID;
+    req.SessionID = pOrder->SessionID;
     // 交易所代码
     // TThostFtdcExchangeIDType    ExchangeID;
     // 报单编号
@@ -369,7 +369,7 @@ void CTraderSpi::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAc
 {
     cout << "--->>> " << __FUNCTION__ << endl;
     IsErrorRspInfo(pRspInfo);
-    ReqQryOrder();
+    // ReqQryOrder();
 }
 
 // 报单通知
@@ -458,13 +458,14 @@ void CTraderSpi::ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const 
     }
     return;
 }
+
 // 请求查询报单
 void CTraderSpi::ReqQryOrder()
 {
     cout << "--->>> " << __FUNCTION__ << endl;
     CThostFtdcQryOrderField req;
     memset(&req, 0, sizeof(req));
-    int iResult = pUserApi->ReqQryOrder(&req, 2222);
+    int iResult = pUserApi->ReqQryOrder(&req, iRequestID++);
     cout << "--->>> iRequestID=: " << iRequestID << endl;
     cout << "--->>> iResult =: " << iResult << endl;
     cout << "--->>> 发送查询请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
@@ -477,12 +478,21 @@ void CTraderSpi::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoFi
     cout << "--->>> " << __FUNCTION__ << " " << n++ << " times" << endl;
     if (!IsErrorRspInfo(pRspInfo))
     {
-        MySleep(1);
-		cout << "--->>> " << nRequestID << " " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->BrokerID << " " << pOrder->InvestorID
-			<< " " << pOrder->InstrumentID << " " << pOrder->OrderRef << " " << pOrder->OrderPriceType
-			<< " " << pOrder->Direction << " " << pOrder->LimitPrice << " " << pOrder->VolumeTotalOriginal
-			<< " " << pOrder->RequestID << pOrder->InsertDate << " " << pOrder->InsertTime << " " << pOrder->UpdateTime << endl;
-		cout << "--->>> " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->OrderRef
-			<< " " << pOrder->InstrumentID << endl;
+		if (THOST_FTDC_OSS_CancelRejected != pOrder->OrderStatus)
+		{
+			cout << "--->>> " << nRequestID << " " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->BrokerID << " " << pOrder->InvestorID
+				<< " " << pOrder->InstrumentID << " " << pOrder->OrderRef << " " << pOrder->OrderPriceType
+				<< " " << pOrder->Direction << " " << pOrder->LimitPrice << " " << pOrder->VolumeTotalOriginal
+				<< " " << pOrder->RequestID << pOrder->InsertDate << " " << pOrder->InsertTime << " " << pOrder->UpdateTime << endl;
+			cout << "--->>> " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->OrderRef
+				<< " " << pOrder->InstrumentID << endl;
+		}
+
+		/*
+		if (true == bIsLast)
+		{
+			ReqOrderActionAFDelete(pOrder);
+		}
+		*/
     }
 }
