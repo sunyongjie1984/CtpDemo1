@@ -188,7 +188,7 @@ void CTraderSpi::ReqQryInvestorPosition()
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
-    strcpy(req.InstrumentID, INSTRUMENT_ID);
+    // strcpy(req.InstrumentID, INSTRUMENT_ID);
     int iResult = pUserApi->ReqQryInvestorPosition(&req, ++iRequestID);
     cout << "--->>> iRequestID=: " << iRequestID << endl;
     cout << "--->>> iResult =: " << iResult << endl;
