@@ -39,9 +39,9 @@ int iRequestID = 0;
 void MySleep(const int n)
 {
 #ifdef _linux
-	sleep(n);
+    sleep(n);
 #else
-	Sleep(n * 1000);
+    Sleep(n * 1000);
 #endif
 }
 
@@ -57,11 +57,12 @@ int main()
     pUserApi->RegisterFront(FRONT_ADDR);                   // connect
     pUserApi->Init();
 
-	MySleep(10);
-	pUserSpi->ReqQryTradingAccount();
-	// 报单录入请求
-	// pUserSpi->ReqOrderInsert("ag1612", 4200.0, 14);
-	// pUserSpi->ReqQryOrder();
+    MySleep(10);
+    // pUserSpi->ReqQryTradingAccount();
+    // 报单录入请求
+    // pUserSpi->ReqOrderInsert("ag1612", 4200.0, 14);
+    MySleep(1);
+    pUserSpi->ReqQryOrder();
 
     pUserApi->Join();
     // pUserApi->Release();

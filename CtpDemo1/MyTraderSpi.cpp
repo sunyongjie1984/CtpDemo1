@@ -432,7 +432,7 @@ bool CTraderSpi::IsTradingOrder(CThostFtdcOrderField *pOrder)
 
 void CTraderSpi::ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const pRspUserLogin) const
 {
-	cout << "--->>> " << __FUNCTION__ << endl;
+    cout << "--->>> " << __FUNCTION__ << endl;
     if (NULL != pRspUserLogin)
     {
         std::cout << "--->>> date: " << pRspUserLogin->TradingDay << std::endl;
@@ -470,17 +470,17 @@ void CTraderSpi::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoFi
     static unsigned int n = 0;
     cout << "--->>> " << __FUNCTION__ << " " << n++ << " times" << endl;
     if (!IsErrorRspInfo(pRspInfo))
-	{
-		cout << "--->>> " << nRequestID << " " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->BrokerID << " " << pOrder->InvestorID
-			<< " " << pOrder->InstrumentID << " " << pOrder->OrderRef << " " << pOrder->OrderPriceType
-			<< " " << pOrder->Direction << " " << pOrder->LimitPrice << " " << pOrder->VolumeTotalOriginal
-			<< " " << pOrder->RequestID << pOrder->InsertDate << " " << pOrder->InsertTime << " " << pOrder->UpdateTime << " " << pOrder->OrderStatus
-			<< " " << pOrder->StatusMsg << endl;;
-		cout << "--->>> " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->OrderRef
-			<< " " << pOrder->InstrumentID << endl;
-		if (bIsLast == true)
-		{
-			ReqOrderActionAFDelete(pOrder);
-		}
-	}
+    {
+        cout << "--->>> " << nRequestID << " " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->BrokerID << " " << pOrder->InvestorID
+            << " " << pOrder->InstrumentID << " " << pOrder->OrderRef << " " << pOrder->OrderPriceType
+            << " " << pOrder->Direction << " " << pOrder->LimitPrice << " " << pOrder->VolumeTotalOriginal
+            << " " << pOrder->RequestID << pOrder->InsertDate << " " << pOrder->InsertTime << " " << pOrder->UpdateTime << " " << pOrder->OrderStatus
+            << " " << pOrder->StatusMsg << endl;;
+        cout << "--->>> " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->OrderRef
+            << " " << pOrder->InstrumentID << endl;
+        if (bIsLast == true)
+        {
+            ReqOrderActionAFDelete(pOrder);
+        }
+    }
 }
