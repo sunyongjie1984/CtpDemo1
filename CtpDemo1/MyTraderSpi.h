@@ -41,20 +41,19 @@ public:
     virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
 
     // 请求查询报单响应
+    // do ReqOrderInsert before ReqQryOrder
+    // or the following function pOrder or pRspInfo will be 0 when recall
     virtual void OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
     ///请求查询报单
     void ReqQryOrder();
     // 报单录入请求
-	void ReqOrderInsert(const char* const, const double, const int);
+    void ReqOrderInsert(const char* const, const double, const int);
     // 报单操作请求
     void ReqOrderAction(CThostFtdcOrderField *pOrder);
-	// 报单操作请求--撤单
-	void ReqOrderActionAFDelete(CThostFtdcOrderField *pOrder);
+    // 报单操作请求--撤单
+    void ReqOrderActionAFDelete(CThostFtdcOrderField *pOrder);
     // 请求查询资金账户
     void ReqQryTradingAccount();
-private:
-    // 用户登录请求
-    void ReqUserLogin();
     // 投资者结算结果确认
     void ReqSettlementInfoConfirm();
     // 请求查询合约
@@ -62,6 +61,10 @@ private:
     // 请求查询投资者持仓
     void ReqQryInvestorPosition();
 
+    void ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const) const;
+private:
+    // 用户登录请求
+    void ReqUserLogin();
 
     // 是否收到成功的响应
     bool IsErrorRspInfo(const CThostFtdcRspInfoField* const pRspInfo) const;
@@ -69,6 +72,4 @@ private:
     bool IsMyOrder(CThostFtdcOrderField *pOrder);
     // 是否正在交易的报单
     bool IsTradingOrder(CThostFtdcOrderField *pOrder);
-
-    void ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const) const;
 };

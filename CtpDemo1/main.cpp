@@ -57,12 +57,16 @@ int main()
     pUserApi->RegisterFront(FRONT_ADDR);                   // connect
     pUserApi->Init();
 
-    MySleep(10);
+    // MySleep(5);
     // pUserSpi->ReqQryTradingAccount();
+    MySleep(2);
+    pUserSpi->ReqQryInvestorPosition();
     // 报单录入请求
     // pUserSpi->ReqOrderInsert("ag1612", 4200.0, 14);
-    MySleep(1);
-    pUserSpi->ReqQryOrder();
+    // MySleep(1);
+    // pUserSpi->ReqQryInstrument();
+    // MySleep(1);
+    // pUserSpi->ReqQryOrder();
 
     pUserApi->Join();
     // pUserApi->Release();
