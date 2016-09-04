@@ -175,8 +175,6 @@ void CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingA
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
 		cout << "--->>> pTradingAccount=: " << pTradingAccount->AccountID << " Available=: " << pTradingAccount->Available << endl;
-
-        MySleep(1);
     }
 }
 
@@ -198,7 +196,8 @@ void CTraderSpi::ReqQryInvestorPosition()
 void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
     cout << "--->>> " << __FUNCTION__ << endl;
-    if (bIsLast && !IsErrorRspInfo(pRspInfo))
+    // if (bIsLast && !IsErrorRspInfo(pRspInfo))
+    if (!IsErrorRspInfo(pRspInfo))
     {
         cout << "--->>> " << pInvestorPosition->InstrumentID << " "
             << pInvestorPosition->PosiDirection << " "
