@@ -195,8 +195,13 @@ void CTraderSpi::ReqQryInvestorPosition()
 
 void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    cout << "--->>> " << __FUNCTION__ << endl;
-    // if (bIsLast && !IsErrorRspInfo(pRspInfo))
+	cout << "--->>> " << __FUNCTION__ << endl;
+	// if (bIsLast && !IsErrorRspInfo(pRspInfo))
+	if (NULL == pInvestorPosition || NULL == pRspInfo)
+	{
+		cout << "--->>> NULL == pInvestorPosition || NULL == pRspInfo" << endl;
+		return;
+	}
     if (!IsErrorRspInfo(pRspInfo))
     {
         cout << "--->>> " << pInvestorPosition->InstrumentID << " "
