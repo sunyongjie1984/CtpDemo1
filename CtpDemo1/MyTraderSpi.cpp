@@ -54,9 +54,9 @@ void CTraderSpi::ReqUserLogin()
     strcpy(req.UserID, INVESTOR_ID);
     strcpy(req.Password, PASSWORD);
     int iResult = pUserApi->ReqUserLogin(&req, ++iRequestID);
-    cout << "--->>> iRequestID=: " << iRequestID << endl;
-	cout << "--->>> iResult =: " << iResult << endl;
-    cout << "--->>> 发送用户登录请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    cout << "--->>>\tiRequestID=: " << iRequestID << endl;
+    cout << "--->>>\tiResult =: " << iResult << endl;
+    cout << "--->>>\t发送用户登录请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
 void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
@@ -70,11 +70,11 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
         int iNextOrderRef = atoi(pRspUserLogin->MaxOrderRef);
         iNextOrderRef++;
         sprintf(ORDER_REF, "%d", iNextOrderRef);
-        cout << "--->>> FrontID = " << FRONT_ID << endl;
-        cout << "--->>> SESSION_ID = " << SESSION_ID << endl;
-        cout << "--->>> MaxOrderRef = " << pRspUserLogin->MaxOrderRef << endl;
+        cout << "--->>>\tFrontID = " << FRONT_ID << endl;
+        cout << "--->>>\tSESSION_ID = " << SESSION_ID << endl;
+        cout << "--->>>\tMaxOrderRef = " << pRspUserLogin->MaxOrderRef << endl;
         // 获取当前交易日
-        cout << "--->>> 获取当前交易日 = " << pUserApi->GetTradingDay() << endl;
+        cout << "--->>>\t获取当前交易日 = " << pUserApi->GetTradingDay() << endl;
         MySleep(1);
         // 投资者结算结果确认
         ReqSettlementInfoConfirm();
@@ -83,13 +83,13 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
     {
         if (0 == pRspInfo->ErrorID)
         {
-            std::cout << "--->>> log in successfully" << std::endl;
+            std::cout << "--->>>\tlog in successfully" << std::endl;
         }
         else
         {
-            std::cout << "log in failed" << std::endl;
-            std::cout << "Error ID = " << pRspInfo->ErrorID << std::endl;
-            std::cout << "Error Msg = " << pRspInfo->ErrorMsg << std::endl;
+            std::cout << "--->>>\tlog in failed" << std::endl;
+            std::cout << "--->>>\tError ID = " << pRspInfo->ErrorID << std::endl;
+            std::cout << "--->>>\tError Msg = " << pRspInfo->ErrorMsg << std::endl;
         }
         if (NULL != pRspUserLogin)
         {
@@ -97,12 +97,12 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
         }
         else
         {
-            std::cout << "Error !!! pRspUserLogin is nullptr" << std::endl;
+            std::cout << "--->>>\tError !!! pRspUserLogin is nullptr" << std::endl;
         }
     }
     else
     {
-            std::cout << "Error !!! pRspInfo is nullptr" << std::endl;
+            std::cout << "--->>>\tError !!! pRspInfo is nullptr" << std::endl;
     }
     return;
 }
@@ -116,9 +116,9 @@ void CTraderSpi::ReqSettlementInfoConfirm()
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
     int iResult = pUserApi->ReqSettlementInfoConfirm(&req, ++iRequestID);
-    cout << "--->>> iRequestID=: " << iRequestID << endl;
-    cout << "--->>> iResult =: " << iResult << endl;
-    cout << "--->>> 发送投资者结算结果确认: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    cout << "--->>>\tiRequestID=: " << iRequestID << endl;
+    cout << "--->>>\tiResult =: " << iResult << endl;
+    cout << "--->>>\t发送投资者结算结果确认: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
 void CTraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -171,10 +171,10 @@ void CTraderSpi::ReqQryTradingAccount()
 
 void CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	cout << "--->>> " << __FUNCTION__ << endl;
-	if (bIsLast && !IsErrorRspInfo(pRspInfo))
+    cout << "--->>> " << __FUNCTION__ << endl;
+    if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
-		cout << "--->>> pTradingAccount=: " << pTradingAccount->AccountID << " Available=: " << pTradingAccount->Available << endl;
+        cout << "--->>>\tpTradingAccount=: " << pTradingAccount->AccountID << " Available=: " << pTradingAccount->Available << endl;
     }
 }
 
@@ -187,6 +187,7 @@ void CTraderSpi::ReqQryInvestorPosition()
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
     // strcpy(req.InstrumentID, INSTRUMENT_ID);
+    // strcpy(req.InstrumentID, "ag1609");
     int iResult = pUserApi->ReqQryInvestorPosition(&req, ++iRequestID);
     cout << "--->>> iRequestID=: " << iRequestID << endl;
     cout << "--->>> iResult =: " << iResult << endl;
@@ -195,13 +196,14 @@ void CTraderSpi::ReqQryInvestorPosition()
 
 void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	cout << "--->>> " << __FUNCTION__ << endl;
-	// if (bIsLast && !IsErrorRspInfo(pRspInfo))
-	if (NULL == pInvestorPosition || NULL == pRspInfo)
-	{
-		cout << "--->>> NULL == pInvestorPosition || NULL == pRspInfo" << endl;
-		return;
-	}
+    cout << "--->>> " << __FUNCTION__ << endl;
+    if (NULL == pInvestorPosition)
+    {
+        cout << "--->>> NULL == pInvestorPosition" << endl;
+        cout << "--->>> no position" << endl;
+        return;
+    }
+    // if (bIsLast && !IsErrorRspInfo(pRspInfo))
     if (!IsErrorRspInfo(pRspInfo))
     {
         cout << "--->>> " << pInvestorPosition->InstrumentID << " "
@@ -381,7 +383,7 @@ void CTraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
     cout << "--->>> " << __FUNCTION__ << endl;
     if (IsMyOrder(pOrder))
     {
-        cout << "--->>> is my order" << endl;
+        cout << "--->>>\tis my order" << endl;
         /*
         if (IsTradingOrder(pOrder))
             ReqOrderAction(pOrder);
@@ -391,7 +393,7 @@ void CTraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
     }
     else
     {
-        cout << "--->>> not my order" << __FUNCTION__ << endl;
+        cout << "--->>>\tnot my order" << endl;
     }
 }
 
@@ -447,19 +449,19 @@ void CTraderSpi::ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const 
     cout << "--->>> " << __FUNCTION__ << endl;
     if (NULL != pRspUserLogin)
     {
-        std::cout << "--->>> date: " << pRspUserLogin->TradingDay << std::endl;
-        std::cout << "--->>> login time: " << pRspUserLogin->LoginTime << std::endl;
-        std::cout << "--->>> broker: " << pRspUserLogin->BrokerID << std::endl;
-        std::cout << "--->>> user: " << pRspUserLogin->UserID << std::endl;
-        std::cout << "--->>> system name: " << pRspUserLogin->SystemName << std::endl;
+        std::cout << "--->>>\tdate: " << pRspUserLogin->TradingDay << std::endl;
+        std::cout << "--->>>\tlogin time: " << pRspUserLogin->LoginTime << std::endl;
+        std::cout << "--->>>\tbroker: " << pRspUserLogin->BrokerID << std::endl;
+        std::cout << "--->>>\tuser: " << pRspUserLogin->UserID << std::endl;
+        std::cout << "--->>>\tsystem name: " << pRspUserLogin->SystemName << std::endl;
     }
     else
     {
-        std::cout << "--->>> date: " << pRspUserLogin->TradingDay << std::endl;
-        std::cout << "--->>> login time: " << pRspUserLogin->LoginTime << std::endl;
-        std::cout << "--->>> broker: " << pRspUserLogin->BrokerID << std::endl;
-        std::cout << "--->>> user: " << pRspUserLogin->UserID << std::endl;
-        std::cout << "--->>> system name: " << pRspUserLogin->SystemName << std::endl;
+        std::cout << "--->>>\tdate: " << pRspUserLogin->TradingDay << std::endl;
+        std::cout << "--->>>\tlogin time: " << pRspUserLogin->LoginTime << std::endl;
+        std::cout << "--->>>\tbroker: " << pRspUserLogin->BrokerID << std::endl;
+        std::cout << "--->>>\tuser: " << pRspUserLogin->UserID << std::endl;
+        std::cout << "--->>>\tsystem name: " << pRspUserLogin->SystemName << std::endl;
     }
     return;
 }
@@ -473,9 +475,9 @@ void CTraderSpi::ReqQryOrder()
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
     int iResult = pUserApi->ReqQryOrder(&req, iRequestID++);
-    cout << "--->>> iRequestID=: " << iRequestID << endl;
-    cout << "--->>> iResult =: " << iResult << endl;
-    cout << "--->>> 发送查询请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    cout << "--->>>\tiRequestID=: " << iRequestID << endl;
+    cout << "--->>>\tiResult =: " << iResult << endl;
+    cout << "--->>>\t发送查询请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
 // 请求查询报单响应
@@ -485,7 +487,7 @@ void CTraderSpi::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoFi
     cout << "--->>> " << __FUNCTION__ << " " << n++ << " times" << endl;
     if (!IsErrorRspInfo(pRspInfo))
     {
-        cout << "--->>> " << nRequestID << " " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->BrokerID << " " << pOrder->InvestorID
+        cout << "--->>>\t" << nRequestID << " " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->BrokerID << " " << pOrder->InvestorID
             << " " << pOrder->InstrumentID << " " << pOrder->OrderRef << " " << pOrder->OrderPriceType
             << " " << pOrder->Direction << " " << pOrder->LimitPrice << " " << pOrder->VolumeTotalOriginal
             << " " << pOrder->RequestID << pOrder->InsertDate << " " << pOrder->InsertTime << " " << pOrder->UpdateTime << " " << pOrder->OrderStatus

@@ -19,7 +19,7 @@ TThostFtdcBrokerIDType BROKER_ID = "9999";             // 经纪公司代码
 TThostFtdcInvestorIDType INVESTOR_ID = "069637";       // 投资者代码
 TThostFtdcPasswordType PASSWORD = "sim0594184520";     // 用户密码
 
-TThostFtdcInstrumentIDType INSTRUMENT_ID = "rb1610";   // 合约代码
+TThostFtdcInstrumentIDType INSTRUMENT_ID = "ag1612";   // 合约代码
 TThostFtdcDirectionType DIRECTION = THOST_FTDC_D_Sell; // 买卖方向
 TThostFtdcPriceType LIMIT_PRICE = 38850;               // 价格
 
@@ -59,15 +59,15 @@ int main()
 
     // MySleep(5);
     // pUserSpi->ReqQryTradingAccount();
-    MySleep(2);
-    pUserSpi->ReqQryInvestorPosition();
+    // MySleep(2);
+    // pUserSpi->ReqQryInvestorPosition();
     // 报单录入请求
-    // pUserSpi->ReqOrderInsert("ag1612", 4200.0, 14);
+    // pUserSpi->ReqOrderInsert(INSTRUMENT_ID, 4200.0, 14);
     // MySleep(1);
     // pUserSpi->ReqQryInstrument();
     // MySleep(1);
     // pUserSpi->ReqQryOrder();
-    MySleep(2);
+    // MySleep(2);
 
     pUserApi->Join();
     // pUserApi->Release();
