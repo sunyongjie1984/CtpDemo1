@@ -1174,8 +1174,6 @@ struct CThostFtdcLoginInfoField
 	TThostFtdcPasswordType	OneTimePassword;
 	///能源中心时间
 	TThostFtdcTimeType	INETime;
-	///查询时是否需要流控
-	TThostFtdcBoolType	IsQryControl;
 };
 
 ///登录信息
@@ -3856,34 +3854,22 @@ struct CThostFtdcQryExchangeCombActionField
 	TThostFtdcTraderIDType	TraderID;
 };
 
-///当前报单手续费的详细内容
-struct CThostFtdcInstrumentOrderCommRateField
+///产品报价汇率
+struct CThostFtdcProductExchRateField
 {
-	///合约代码
-	TThostFtdcInstrumentIDType	InstrumentID;
-	///投资者范围
-	TThostFtdcInvestorRangeType	InvestorRange;
-	///经纪公司代码
-	TThostFtdcBrokerIDType	BrokerID;
-	///投资者代码
-	TThostFtdcInvestorIDType	InvestorID;
-	///投机套保标志
-	TThostFtdcHedgeFlagType	HedgeFlag;
-	///报单手续费
-	TThostFtdcRatioType	OrderCommByVolume;
-	///撤单手续费
-	TThostFtdcRatioType	OrderActionCommByVolume;
+	///产品代码
+	TThostFtdcInstrumentIDType	ProductID;
+	///报价币种类型
+	TThostFtdcCurrencyIDType	QuoteCurrencyID;
+	///汇率
+	TThostFtdcExchangeRateType	ExchangeRate;
 };
 
-///报单手续费率查询
-struct CThostFtdcQryInstrumentOrderCommRateField
+///产品报价汇率查询
+struct CThostFtdcQryProductExchRateField
 {
-	///经纪公司代码
-	TThostFtdcBrokerIDType	BrokerID;
-	///投资者代码
-	TThostFtdcInvestorIDType	InvestorID;
-	///合约代码
-	TThostFtdcInstrumentIDType	InstrumentID;
+	///产品代码
+	TThostFtdcInstrumentIDType	ProductID;
 };
 
 ///市场行情
@@ -5499,26 +5485,6 @@ struct CThostFtdcCFMMCTradingAccountTokenField
 	TThostFtdcSequenceNoType	KeyID;
 	///动态令牌
 	TThostFtdcCFMMCTokenType	Token;
-};
-
-///查询产品组
-struct CThostFtdcQryProductGroupField
-{
-	///产品代码
-	TThostFtdcInstrumentIDType	ProductID;
-	///交易所代码
-	TThostFtdcExchangeIDType	ExchangeID;
-};
-
-///投资者品种/跨品种保证金产品组
-struct CThostFtdcProductGroupField
-{
-	///产品代码
-	TThostFtdcInstrumentIDType	ProductID;
-	///交易所代码
-	TThostFtdcExchangeIDType	ExchangeID;
-	///产品组代码
-	TThostFtdcInstrumentIDType	ProductGroupID;
 };
 
 ///转帐开户请求
@@ -7633,8 +7599,6 @@ struct CThostFtdcLoginForbiddenUserField
 	TThostFtdcBrokerIDType	BrokerID;
 	///用户代码
 	TThostFtdcUserIDType	UserID;
-	///IP地址
-	TThostFtdcIPAddressType	IPAddress;
 };
 
 ///查询禁止登录用户
