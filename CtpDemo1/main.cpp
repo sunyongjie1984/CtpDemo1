@@ -13,8 +13,8 @@
 // UserApi对象
 CThostFtdcTraderApi* pUserApi;
 
-char FRONT_ADDR[] = "tcp://180.168.146.187:10000";     // 前置地址
-// char FRONT_ADDR[] = "tcp://180.168.146.187:10030";     // 前置地址
+// char FRONT_ADDR[] = "tcp://180.168.146.187:10000";     // 前置地址
+char FRONT_ADDR[] = "tcp://180.168.146.187:10030";     // 前置地址
 TThostFtdcBrokerIDType BROKER_ID = "9999";             // 经纪公司代码
 TThostFtdcInvestorIDType INVESTOR_ID = "069637";       // 投资者代码
 TThostFtdcPasswordType PASSWORD = "sim0594184520";     // 用户密码
@@ -59,12 +59,12 @@ int main()
 
     MySleep(5);
     pUserSpi->ReqQryTradingAccount();
-    MySleep(2);
-    pUserSpi->ReqQryInvestorPosition();
-    MySleep(1);
-    // 报单录入请求
-    // pUserSpi->ReqOrderInsert(INSTRUMENT_ID, 4200.0, 14);
+    // MySleep(2);
+    // pUserSpi->ReqQryInvestorPosition();
     // MySleep(1);
+    // 报单录入请求
+    //pUserSpi->ReqOrderInsert(INSTRUMENT_ID, 4336.0, 1);
+    MySleep(1);
     // pUserSpi->ReqQryInstrument();
     // MySleep(1);
     // pUserSpi->ReqQryOrder();
