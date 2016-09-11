@@ -24,6 +24,7 @@ static CTS_APP g_TS_APP;
 CTS_APP* pApp = &g_TS_APP;
 // UserApi对象
 CThostFtdcTraderApi* pUserApi;
+CTraderSpi* pUserSpi;
 
 // char FRONT_ADDR[] = "tcp://180.168.146.187:10000";     // 前置地址
 char FRONT_ADDR[] = "tcp://180.168.146.187:10030";     // 前置地址
@@ -39,10 +40,10 @@ TThostFtdcPriceType LIMIT_PRICE = 38850;               // 价格
 int iRequestID = 0;
 CEvent RspSettlementEvent;
 CEvent RspQryTradingEvent;
-/**
- *  * functions to handle the signal of SIGUSR1
- *   * if the value of static variable iExtFlag is not equal zero, this func will exit without waiting for the main function to do to other things.
- *    */
+/*
+ *   functions to handle the signal of SIGUSR1
+ *    if the value of static variable iExtFlag is not equal zero, this func will exit without waiting for the main function to do to other things.
+ */
 /*void sTerminate()
 {
     printf( "Get a SIGUSR1 signal!\n" );
@@ -74,8 +75,33 @@ int32_t CTS_APP::init(int32_t argc, char** argv)
     pUserApi->SubscribePrivateTopic(THOST_TERT_RESTART);   // 注册私有流
     pUserApi->RegisterFront(FRONT_ADDR);                   // connect
     pUserApi->Init();
+    QueryTradingAccountAndPosition();
     NOTICE(TS_NOTICE_FINISHINIT, "CtpDemo1 init finished");
     return 0;
+}
+
+int CTS_APP::QueryTradingAccountAndPosition()
+{
+    int iResult;
+    INFO(0, "start waiting for RspSettlementInfoConfirm");
+    DEBUG(CTPDEMO1_DEBUG, "start waiting for RspSettlementInfoConfirm");
+    RspSettlementEvent.Wait();
+    DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspSettlementIffoConfirm");
+    iResult = pUserSpi->ReqQryTradingAccount();
+    if (0 != iResult)
+    {
+        std::cout << "" << std::endl;
+    }
+    DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryTradingEvent");
+    RspQryTradingEvent.Wait();
+    DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspQryTradingEvent");
+    iResult = pUserSpi->ReqQryInvestorPosition();
+    if (0 != iResult)
+    {
+        MySleep(1);
+        pUserSpi->ReqQryInvestorPosition();
+    }
+    return iResult;
 }
 
 // 重载基类的fini函数，用于结束撮合主机

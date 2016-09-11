@@ -43,6 +43,7 @@ public:
 protected:
 
 private:
+    int QueryTradingAccountAndPosition();
 };
 
 extern CTS_APP* pApp;
