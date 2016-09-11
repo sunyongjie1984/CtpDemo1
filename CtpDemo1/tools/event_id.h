@@ -21,6 +21,7 @@
 ///各模块业务状态时序号段：800000-805000
 enum BusinessSequenceEventId
 {
+    CTPDEMO1_DEBUG                   = 200000,   /**CTPDEMO1 debug output                        */
     /* 交易主机 */
     TS_NOTICE_STATRTINIT             = 800000,   /**<TS初始化开始                                */
     TS_NOTICE_FINISHINIT             = 800001,   /**<TS初始化完成                                */

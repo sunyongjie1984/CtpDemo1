@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include <signal.h>
 #include "event.h"
+#include "event_id.h"
+#include "CtpDemo1.h"
 #else
 #include <Windows.h>
 #endif
@@ -42,7 +44,7 @@ extern void MySleep(const int n);
 
 void CTraderSpi::OnFrontConnected()
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     ///用户登录请求
     ReqUserLogin();
 }
@@ -50,22 +52,21 @@ void CTraderSpi::OnFrontConnected()
 // 请求登录
 void CTraderSpi::ReqUserLogin()
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     CThostFtdcReqUserLoginField req;
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.UserID, INVESTOR_ID);
     strcpy(req.Password, PASSWORD);
     int iResult = pUserApi->ReqUserLogin(&req, ++iRequestID);
-    cout << "--->>>\tiRequestID=: " << iRequestID << endl;
-    cout << "--->>>\tiResult =: " << iResult << endl;
-    cout << "--->>>\t发送用户登录请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    DEBUG(CTPDEMO1_DEBUG, "iRequestID =: %d", iRequestID);
+    DEBUG(CTPDEMO1_DEBUG, "iResult =: %d", iResult);
 }
 
 void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
-    cout << "--->>>\tOnRsp iRequestID=: " << iRequestID << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
+    DEBUG(CTPDEMO1_DEBUG, "OnRsp iRequestID=: %d", iRequestID);
     if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
         // 保存会话参数
@@ -89,21 +90,20 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
 // 投资者结算结果确认
 void CTraderSpi::ReqSettlementInfoConfirm()
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     CThostFtdcSettlementInfoConfirmField req;
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
     int iResult = pUserApi->ReqSettlementInfoConfirm(&req, ++iRequestID);
-    cout << "--->>>\tiRequestID=: " << iRequestID << endl;
-    cout << "--->>>\tiResult =: " << iResult << endl;
-    cout << "--->>>\t发送投资者结算结果确认: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    DEBUG(CTPDEMO1_DEBUG, "iRequestID =: %d", iRequestID);
+    DEBUG(CTPDEMO1_DEBUG, "iResult =: %d", iResult);
 }
 
 void CTraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
-    cout << "--->>>\tOnRsp iRequestID=: " << iRequestID << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
+    DEBUG(CTPDEMO1_DEBUG, "OnRsp iRequestID=: %d", iRequestID);
     if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
         RspSettlementEvent.Set();
@@ -113,20 +113,19 @@ void CTraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField
 // 请求查询合约
 void CTraderSpi::ReqQryInstrument()
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     CThostFtdcQryInstrumentField req;
     memset(&req, 0, sizeof(req));
     strcpy(req.InstrumentID, INSTRUMENT_ID);
     int iResult = pUserApi->ReqQryInstrument(&req, ++iRequestID);
-    cout << "--->>> iRequestID=: " << iRequestID << endl;
-    cout << "--->>> iResult =: " << iResult << endl;
-    cout << "--->>> 发送请求查询合约: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    DEBUG(CTPDEMO1_DEBUG, "iRequestID =: %d", iRequestID);
+    DEBUG(CTPDEMO1_DEBUG, "iResult =: %d", iResult);
 }
 
 void CTraderSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	cout << "--->>> Enter function " << __FUNCTION__ << endl;
-    cout << "--->>>\tOnRsp iRequestID=: " << iRequestID << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
+    DEBUG(CTPDEMO1_DEBUG, "OnRsp iRequestID=: %d", iRequestID);
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
 		cout << "--->>> InstrumentID=: " << pInstrument->InstrumentID << endl;
@@ -138,22 +137,21 @@ void CTraderSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CTho
 // 请求查询资金账户
 int CTraderSpi::ReqQryTradingAccount()
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     CThostFtdcQryTradingAccountField req;
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
     int iResult = pUserApi->ReqQryTradingAccount(&req, ++iRequestID);
-    cout << "--->>>\tiRequestID=: " << iRequestID << endl;
-    cout << "--->>>\tiResult =: " << iResult << endl;
-    cout << "--->>>\t发送请求查询资金账户: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    DEBUG(CTPDEMO1_DEBUG, "iRequestID =: %d", iRequestID);
+    DEBUG(CTPDEMO1_DEBUG, "iResult =: %d", iRequestID);
     return iResult;
 }
 
 void CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
-    cout << "--->>>\tOnRsp iRequestID=: " << iRequestID << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
+    DEBUG(CTPDEMO1_DEBUG, "OnRsp iRequestID=: %d", iRequestID);
     if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
         cout << "--->>>\tAccount=: " << pTradingAccount->AccountID << " Available=: " << pTradingAccount->Available << endl;
@@ -164,23 +162,22 @@ void CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingA
 // 请求查询投资者持仓
 int CTraderSpi::ReqQryInvestorPosition()
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     CThostFtdcQryInvestorPositionField req;
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
     // strcpy(req.InstrumentID, INSTRUMENT_ID);
     int iResult = pUserApi->ReqQryInvestorPosition(&req, ++iRequestID);
-    cout << "--->>>\tiRequestID=: " << iRequestID << endl;
-    cout << "--->>>\tiResult =: " << iResult << endl;
-    cout << "--->>>\t发送请求查询投资者持仓: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    DEBUG(CTPDEMO1_DEBUG, "iRequestID =: %d", iRequestID);
+    DEBUG(CTPDEMO1_DEBUG, "iResult =: %d", iRequestID);
     return iResult;
 }
 
 void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
-    cout << "--->>>\tOnRsp iRequestID=: " << iRequestID << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
+    DEBUG(CTPDEMO1_DEBUG, "OnRsp iRequestID=: %d", iRequestID);
     if (NULL == pInvestorPosition)
     {
         cout << "--->>>\tNULL == pInvestorPosition" << endl;
@@ -277,7 +274,7 @@ void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
 // 报单录入请求
 void CTraderSpi::ReqOrderInsert(const char* const pInstrument_ID, const double price, const int amount)
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     CThostFtdcInputOrderField req;
     memset(&req, 0, sizeof(req));
     // 经纪公司代码
@@ -326,22 +323,21 @@ void CTraderSpi::ReqOrderInsert(const char* const pInstrument_ID, const double p
     req.UserForceClose = 0;
 
     int iResult = pUserApi->ReqOrderInsert(&req, ++iRequestID);
-    cout << "--->>> iRequestID=: " << iRequestID << endl;
-	cout << "--->>> iResult =: " << iResult << endl;
-    cout << "--->>> 发送报单录入请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    DEBUG(CTPDEMO1_DEBUG, "iRequestID =: %d", iRequestID);
+    DEBUG(CTPDEMO1_DEBUG, "iResult =: %d", iResult);
 }
 
 void CTraderSpi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	cout << "--->>> Enter function " << __FUNCTION__ << endl;
-    cout << "--->>>\tOnRsp iRequestID=: " << iRequestID << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
+    DEBUG(CTPDEMO1_DEBUG, "OnRsp iRequestID=: %d", iRequestID);
 	IsErrorRspInfo(pRspInfo);
 }
 
 // 报单操作请求
 void CTraderSpi::ReqOrderAction(CThostFtdcOrderField *pOrder)
 {
-	cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     static bool ORDER_ACTION_SENT = false;      //是否发送了报单
     if (ORDER_ACTION_SENT)
         return;
@@ -378,16 +374,15 @@ void CTraderSpi::ReqOrderAction(CThostFtdcOrderField *pOrder)
     strcpy(req.InstrumentID, pOrder->InstrumentID);
 
     int iResult = pUserApi->ReqOrderAction(&req, ++iRequestID);
-    cout << "--->>> iRequestID=: " << iRequestID << endl;
-    cout << "--->>> iResult =: " << iResult << endl;
-    cout << "--->>> 发送报单操作请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    DEBUG(CTPDEMO1_DEBUG, "iRequestID =: %d", iRequestID);
+    DEBUG(CTPDEMO1_DEBUG, "iResult =: %d", iResult);
     ORDER_ACTION_SENT = true;
 }
 
 // 报单操作请求--撤单
 void CTraderSpi::ReqOrderActionAFDelete(CThostFtdcOrderField *pOrder)
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     static bool ORDER_ACTION_SENT = false;      //是否发送了报单
     if (ORDER_ACTION_SENT)
         return;
@@ -424,16 +419,15 @@ void CTraderSpi::ReqOrderActionAFDelete(CThostFtdcOrderField *pOrder)
     strcpy(req.InstrumentID, pOrder->InstrumentID);
 
     int iResult = pUserApi->ReqOrderAction(&req, ++iRequestID);
-    cout << "--->>> iRequestID=: " << iRequestID << endl;
-    cout << "--->>> iResult =: " << iResult << endl;
-    cout << "--->>> 发送报单操作请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    DEBUG(CTPDEMO1_DEBUG, "iRequestID =: %d", iRequestID);
+    DEBUG(CTPDEMO1_DEBUG, "iResult =: %d", iResult);
     ORDER_ACTION_SENT = true;
 }
 
 void CTraderSpi::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
-    cout << "--->>>\tOnRsp iRequestID=: " << iRequestID << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
+    DEBUG(CTPDEMO1_DEBUG, "OnRsp iRequestID=: %d", iRequestID);
     IsErrorRspInfo(pRspInfo);
     // ReqQryOrder();
 }
@@ -441,7 +435,7 @@ void CTraderSpi::OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAc
 // 报单通知
 void CTraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     if (IsMyOrder(pOrder))
     {
         cout << "--->>>\tis my order" << endl;
@@ -461,29 +455,30 @@ void CTraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
 // 成交通知
 void CTraderSpi::OnRtnTrade(CThostFtdcTradeField *pTrade)
 {
-	cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
 }
 
 void CTraderSpi::OnFrontDisconnected(int nReason)
 {
-	cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
 	cout << "--->>> Reason = " << nReason << endl;
 }
 
 void CTraderSpi::OnHeartBeatWarning(int nTimeLapse)
 {
-	cout << "--->>> " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
 	cout << "--->>> nTimerLapse = " << nTimeLapse << endl;
 }
 
 void CTraderSpi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
 	IsErrorRspInfo(pRspInfo);
 }
 
 bool CTraderSpi::IsErrorRspInfo(const CThostFtdcRspInfoField* const pRspInfo) const
 {
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     // 如果0 != ErrorID, 说明收到了错误的响应
     bool bResult = ((pRspInfo) && (pRspInfo->ErrorID != 0));
     if (bResult)
@@ -493,6 +488,7 @@ bool CTraderSpi::IsErrorRspInfo(const CThostFtdcRspInfoField* const pRspInfo) co
 
 bool CTraderSpi::IsMyOrder(CThostFtdcOrderField *pOrder)
 {
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     return ((pOrder->FrontID == FRONT_ID) &&
             (pOrder->SessionID == SESSION_ID) &&
             (strcmp(pOrder->OrderRef, ORDER_REF) == 0));
@@ -500,6 +496,7 @@ bool CTraderSpi::IsMyOrder(CThostFtdcOrderField *pOrder)
 
 bool CTraderSpi::IsTradingOrder(CThostFtdcOrderField *pOrder)
 {
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     return ((pOrder->OrderStatus != THOST_FTDC_OST_PartTradedNotQueueing) &&
             (pOrder->OrderStatus != THOST_FTDC_OST_Canceled) &&
             (pOrder->OrderStatus != THOST_FTDC_OST_AllTraded));
@@ -507,7 +504,7 @@ bool CTraderSpi::IsTradingOrder(CThostFtdcOrderField *pOrder)
 
 void CTraderSpi::ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const pRspUserLogin) const
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     if (NULL != pRspUserLogin)
     {
         std::cout << "--->>>\tdate: " << pRspUserLogin->TradingDay << std::endl;
@@ -530,23 +527,22 @@ void CTraderSpi::ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const 
 // 请求查询报单
 void CTraderSpi::ReqQryOrder()
 {
-    cout << "--->>> Enter function " << __FUNCTION__ << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     CThostFtdcQryOrderField req;
     memset(&req, 0, sizeof(req));
     strcpy(req.BrokerID, BROKER_ID);
     strcpy(req.InvestorID, INVESTOR_ID);
     int iResult = pUserApi->ReqQryOrder(&req, iRequestID++);
-    cout << "--->>>\tiRequestID=: " << iRequestID << endl;
-    cout << "--->>>\tiResult =: " << iResult << endl;
-    cout << "--->>>\t发送查询请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    DEBUG(CTPDEMO1_DEBUG, "iRequestID =: %d", iRequestID);
+    DEBUG(CTPDEMO1_DEBUG, "iResult =: %d", iResult);
 }
 
 // 请求查询报单响应
 void CTraderSpi::OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
     static unsigned int n = 0;
-    cout << "--->>> Enter function " << __FUNCTION__ << " " << n++ << " times" << endl;
-    cout << "--->>>\tOnRsp iRequestID=: " << iRequestID << endl;
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s %d times", __FUNCTION__, n);
+    DEBUG(CTPDEMO1_DEBUG, "OnRsp iRequestID=: %d", iRequestID);
     if (!IsErrorRspInfo(pRspInfo))
     {
         cout << "--->>>\t" << nRequestID << " " << pOrder->FrontID << " " << pOrder->SessionID << " " << pOrder->BrokerID << " " << pOrder->InvestorID
