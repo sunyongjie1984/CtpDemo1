@@ -154,7 +154,7 @@ void CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingA
     DEBUG(CTPDEMO1_DEBUG, "OnRsp iRequestID=: %d", iRequestID);
     if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
-        cout << "--->>>\tAccount=: " << pTradingAccount->AccountID << " Available=: " << pTradingAccount->Available << endl;
+        DEBUG(CTPDEMO1_DEBUG, "Account=: %s, Available=: %d", pTradingAccount->AccountID, pTradingAccount->Available);
     }
     RspQryTradingEvent.Set();
 }
@@ -180,94 +180,54 @@ void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
     DEBUG(CTPDEMO1_DEBUG, "OnRsp iRequestID=: %d", iRequestID);
     if (NULL == pInvestorPosition)
     {
-        cout << "--->>>\tNULL == pInvestorPosition" << endl;
-        cout << "--->>>\tno position" << endl;
+        DEBUG(CTPDEMO1_DEBUG, "NULL == pInvestorPositiond, no position");
         return;
     }
     // if (bIsLast && !IsErrorRspInfo(pRspInfo))
     if (!IsErrorRspInfo(pRspInfo))
     {
-        cout << "--->>>\t" << pInvestorPosition->InstrumentID
-            << " position direction: "
-            << pInvestorPosition->PosiDirection
-            << " hedgeFlag: "
-            << pInvestorPosition->HedgeFlag
-            << " positionDate: "
-            << pInvestorPosition->PositionDate
-            << " YdPosition: "
-            << pInvestorPosition->YdPosition
-            << " position: "
-            << pInvestorPosition->Position
-            << " long frozen: "
-            << pInvestorPosition->LongFrozen
-            << " short frozen: "
-            << pInvestorPosition->ShortFrozen
-            << " LongFrozenAmount: "
-            << pInvestorPosition->LongFrozenAmount
-            << " ShortFrozenAmount: "
-            << pInvestorPosition->ShortFrozenAmount
-            << " OpenVolume: "
-            << pInvestorPosition->OpenVolume
-            << " CloseVolume: "
-            << pInvestorPosition->CloseVolume
-            << " OpenAmount: "
-            << pInvestorPosition->OpenAmount
-            << " CloseAmount: "
-            << pInvestorPosition->CloseAmount
-            << " PositionCost: "
-            << pInvestorPosition->PositionCost
-            << " PreMargin: "
-            << pInvestorPosition->PreMargin
-            << " UseMargin: "
-            << pInvestorPosition->UseMargin
-            << " FrozenMargin: "
-            << pInvestorPosition->FrozenMargin
-            << " FrozenCash: "
-            << pInvestorPosition->FrozenCash
-            << " FrozenCommission: "
-            << pInvestorPosition->FrozenCommission
-            << " CashIn: "
-            << pInvestorPosition->CashIn
-            << " Commission: "
-            << pInvestorPosition->Commission
-            << " CloseProfit: "
-            << pInvestorPosition->CloseProfit
-            << " PositionProfit: "
-            << pInvestorPosition->PositionProfit
-            << " PreSettlementPrice: "
-            << pInvestorPosition->PreSettlementPrice
-            << " SettlementPrice: "
-            << pInvestorPosition->SettlementPrice
-            << " TradingDay: "
-            << pInvestorPosition->TradingDay
-            << " OpenCost: "
-            << pInvestorPosition->OpenCost
-            << " ExchangeMargin: "
-            << pInvestorPosition->ExchangeMargin
-            << " CombPosition: "
-            << pInvestorPosition->CombPosition
-            << " CombLongFrozen: "
-            << pInvestorPosition->CombLongFrozen
-            << " CombShortFrozen: "
-            << pInvestorPosition->CombShortFrozen
-            << " CloseProfitByDate: "
-            << pInvestorPosition->CloseProfitByDate
-            << " CloseProfitByTrade: "
-            << pInvestorPosition->CloseProfitByTrade
-            << " TodayPosition: "
-            << pInvestorPosition->TodayPosition
-            << " MarginRateByMoney: "
-            << pInvestorPosition->MarginRateByMoney
-            << " MarginRateByVolume: "
-            << pInvestorPosition->MarginRateByVolume
-            << " StrikeFrozen: "
-            << pInvestorPosition->StrikeFrozen
-            << " StrikeFrozenAmount: "
-            << pInvestorPosition->StrikeFrozenAmount
-            << " AbandonFrozen: "
-            << pInvestorPosition->AbandonFrozen
-            << " "
-            << endl;
+        DEBUG(CTPDEMO1_DEBUG, "%s ,PosiDirection %c, HedgeFlag %c, PositionDate %c, YdPosition %d, Position %d, LongFrozen %d, ShortFrozen %d, LongFrozenAmount %lf, ShortFrozenAmount %lf, OpenVolume %d, CloseVolume %d, OpenAmount %lf, CloseAmount %lf, PositionCost %lf, PreMargin %lf, UseMargin %lf, FrozenMargin %lf, FrozenCash %lf, FrozenCommission %lf, CashIn %lf, Commission %lf, CloseProfit %lf, PositionProfit %lf, PreSettlementPrice %lf, SettlementPrice %lf, TradingDay %s, SettlementID %d, OpenCost %lf, ExchangeMargin %lf, CombPosition %d, CombLongFrozen %d, CombShortFrozen %d, CloseProfitByDate %lf, CloseProfitByTrade %lf, TodayPosition: %d, MarginRateByMoney %lf, MarginRateByVolume %lf, StrikeFrozen %d, StrikeFrozenAmount %lf, AbandonFrozen %d",
+                pInvestorPosition->InstrumentID,
+                pInvestorPosition->PosiDirection,
+                pInvestorPosition->HedgeFlag,
+                pInvestorPosition->PositionDate,
+                pInvestorPosition->YdPosition,
+                pInvestorPosition->Position,
+                pInvestorPosition->LongFrozen,
+                pInvestorPosition->ShortFrozen,
+                pInvestorPosition->LongFrozenAmount,
+                pInvestorPosition->ShortFrozenAmount,
+                pInvestorPosition->OpenVolume,
+                pInvestorPosition->CloseVolume,
+                pInvestorPosition->OpenAmount,
+                pInvestorPosition->CloseAmount,
+                pInvestorPosition->PositionCost,
+                pInvestorPosition->PreMargin,
+                pInvestorPosition->UseMargin,
+                pInvestorPosition->FrozenMargin,
+                pInvestorPosition->FrozenCash,
+                pInvestorPosition->FrozenCommission,
+                pInvestorPosition->CashIn,
+                pInvestorPosition->Commission,
+                pInvestorPosition->CloseProfit,
+                pInvestorPosition->PositionProfit,
+                pInvestorPosition->PreSettlementPrice,
+                pInvestorPosition->SettlementPrice,
+                pInvestorPosition->TradingDay,
+                pInvestorPosition->SettlementID,
+                pInvestorPosition->OpenCost,
+                pInvestorPosition->ExchangeMargin,
+                pInvestorPosition->CombPosition,
+                pInvestorPosition->CombLongFrozen,
+                pInvestorPosition->CombShortFrozen,
+                pInvestorPosition->CloseProfitByDate,
+                pInvestorPosition->CloseProfitByTrade,
+                pInvestorPosition->TodayPosition,
+                pInvestorPosition->MarginRateByMoney,
+                pInvestorPosition->MarginRateByVolume,
+                pInvestorPosition->StrikeFrozen,
+                pInvestorPosition->StrikeFrozenAmount,
+                pInvestorPosition->AbandonFrozen);
     }
 }
 
