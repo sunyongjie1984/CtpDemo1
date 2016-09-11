@@ -6,10 +6,18 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#include "frame_app.h"
 #include "event.h"
+//#include "log_interface.h"
+//#include "log_impl.h"
+//#include "ts_app.h"
 #else
 #include <Windows.h>
 #endif
+
+///定义主框架
+//static CTS_APP g_TS_APP;
+//CTS_APP* pApp = &g_TS_APP;
 
 // UserApi对象
 CThostFtdcTraderApi* pUserApi;
@@ -48,8 +56,17 @@ void MySleep(const int n)
 #endif
 }
 
-int main()
+int32_t main(int32_t argc, char** argv)
 {
+    pFrame_App->run(argc, argv);
+    /*
+    int iResult;
+    iResult = CLOG->open(0);
+    if (iResult != 0)
+    {
+        fprintf(stderr, "[%s:%d]open log file failed.\n", __FILE__, __LINE__);
+        exit(-1);
+    }
     // sigset(SIGUSR1, sTerminate);
     // 初始化UserApi
     pUserApi = CThostFtdcTraderApi::CreateFtdcTraderApi(); // 创建UserApi
@@ -60,10 +77,10 @@ int main()
     pUserApi->RegisterFront(FRONT_ADDR);                   // connect
     pUserApi->Init();
 
+    INFO(0, "start waiting for RspSettlementInfoConfirm");
     std::cout << "start waiting for RspSettlementInfoConfirm" << std::endl;
     RspSettlementEvent.Wait();
     std::cout << "Wait return ! RspSettlementEvent" << std::endl;
-    int iResult;
     iResult = pUserSpi->ReqQryTradingAccount();
     if (0 != iResult)
     {
@@ -90,5 +107,6 @@ int main()
     pUserApi->Join();
     // pUserApi->Release();
 
+    */
     return 0;
 }
