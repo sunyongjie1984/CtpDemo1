@@ -76,11 +76,11 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
         iNextOrderRef++;
         sprintf(ORDER_REF, "%d", iNextOrderRef);
         ShowRspUserLoginField(pRspUserLogin);
-        cout << "--->>>\tFrontID = " << FRONT_ID << endl;
-        cout << "--->>>\tSESSION_ID = " << SESSION_ID << endl;
-        cout << "--->>>\tMaxOrderRef = " << pRspUserLogin->MaxOrderRef << endl;
+        DEBUG(CTPDEMO1_DEBUG, "FrontID=: %d", FRONT_ID);
+        DEBUG(CTPDEMO1_DEBUG, "SESSION_ID=: %d", SESSION_ID);
+        DEBUG(CTPDEMO1_DEBUG, "MaxOrderRef=: %d", pRspUserLogin->MaxOrderRef);
         // 获取当前交易日
-        cout << "--->>>\t获取当前交易日 = " << pUserApi->GetTradingDay() << endl;
+        DEBUG(CTPDEMO1_DEBUG, "TradingDay=: %s", pUserApi->GetTradingDay());
         // 投资者结算结果确认
         ReqSettlementInfoConfirm();
     }
@@ -507,19 +507,11 @@ void CTraderSpi::ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const 
     DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     if (NULL != pRspUserLogin)
     {
-        std::cout << "--->>>\tdate: " << pRspUserLogin->TradingDay << std::endl;
-        std::cout << "--->>>\tlogin time: " << pRspUserLogin->LoginTime << std::endl;
-        std::cout << "--->>>\tbroker: " << pRspUserLogin->BrokerID << std::endl;
-        std::cout << "--->>>\tuser: " << pRspUserLogin->UserID << std::endl;
-        std::cout << "--->>>\tsystem name: " << pRspUserLogin->SystemName << std::endl;
-    }
-    else
-    {
-        std::cout << "--->>>\tdate: " << pRspUserLogin->TradingDay << std::endl;
-        std::cout << "--->>>\tlogin time: " << pRspUserLogin->LoginTime << std::endl;
-        std::cout << "--->>>\tbroker: " << pRspUserLogin->BrokerID << std::endl;
-        std::cout << "--->>>\tuser: " << pRspUserLogin->UserID << std::endl;
-        std::cout << "--->>>\tsystem name: " << pRspUserLogin->SystemName << std::endl;
+        DEBUG(CTPDEMO1_DEBUG, "date: %s", pRspUserLogin->TradingDay);
+        DEBUG(CTPDEMO1_DEBUG, "login time: %s", pRspUserLogin->LoginTime);
+        DEBUG(CTPDEMO1_DEBUG, "BrokerID: %s", pRspUserLogin->BrokerID);
+        DEBUG(CTPDEMO1_DEBUG, "UserID: %s", pRspUserLogin->UserID);
+        DEBUG(CTPDEMO1_DEBUG, "SystemName: %s", pRspUserLogin->SystemName);
     }
     return;
 }

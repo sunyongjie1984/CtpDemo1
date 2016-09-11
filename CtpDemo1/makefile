@@ -26,3 +26,5 @@ frame_app.o: tools/frame_app.cpp
 	g++ -c ${cflag} tools/frame_app.cpp ${INCLUDE}
 clean :
 	rm -rf *.o CtpDemo1 *.dSYM *.log *.con core*
+allclean :
+	rm -rf *.o CtpDemo1 *.dSYM *.log *.con core* log/*
