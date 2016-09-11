@@ -55,13 +55,13 @@ public:
     // 报单操作请求--撤单
     void ReqOrderActionAFDelete(CThostFtdcOrderField *pOrder);
     // 请求查询资金账户
-    void ReqQryTradingAccount();
+    int ReqQryTradingAccount();
     // 投资者结算结果确认
     void ReqSettlementInfoConfirm();
     // 请求查询合约
     void ReqQryInstrument();
     // 请求查询投资者持仓
-    void ReqQryInvestorPosition();
+    int ReqQryInvestorPosition();
 
     void ShowRspUserLoginField(const CThostFtdcRspUserLoginField* const) const;
 private:

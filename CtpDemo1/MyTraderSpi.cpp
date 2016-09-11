@@ -31,6 +31,7 @@ extern TThostFtdcDirectionType DIRECTION; // 买卖方向
 // 请求编号
 extern int iRequestID;
 extern CEvent RspSettlementEvent;
+extern CEvent RspQryTradingEvent;
 
 // 会话参数
 TThostFtdcFrontIDType FRONT_ID;     // 前置编号
@@ -135,7 +136,7 @@ void CTraderSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CTho
 }
 
 // 请求查询资金账户
-void CTraderSpi::ReqQryTradingAccount()
+int CTraderSpi::ReqQryTradingAccount()
 {
     cout << "--->>> Enter function " << __FUNCTION__ << endl;
     CThostFtdcQryTradingAccountField req;
@@ -146,6 +147,7 @@ void CTraderSpi::ReqQryTradingAccount()
     cout << "--->>>\tiRequestID=: " << iRequestID << endl;
     cout << "--->>>\tiResult =: " << iResult << endl;
     cout << "--->>>\t发送请求查询资金账户: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    return iResult;
 }
 
 void CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -156,10 +158,11 @@ void CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingA
     {
         cout << "--->>>\tAccount=: " << pTradingAccount->AccountID << " Available=: " << pTradingAccount->Available << endl;
     }
+    RspQryTradingEvent.Set();
 }
 
 // 请求查询投资者持仓
-void CTraderSpi::ReqQryInvestorPosition()
+int CTraderSpi::ReqQryInvestorPosition()
 {
     cout << "--->>> Enter function " << __FUNCTION__ << endl;
     CThostFtdcQryInvestorPositionField req;
@@ -171,6 +174,7 @@ void CTraderSpi::ReqQryInvestorPosition()
     cout << "--->>>\tiRequestID=: " << iRequestID << endl;
     cout << "--->>>\tiResult =: " << iResult << endl;
     cout << "--->>>\t发送请求查询投资者持仓: " << ((iResult == 0) ? "成功" : "失败") << endl;
+    return iResult;
 }
 
 void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -186,11 +190,86 @@ void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
     // if (bIsLast && !IsErrorRspInfo(pRspInfo))
     if (!IsErrorRspInfo(pRspInfo))
     {
-        cout << "--->>>\t" << pInvestorPosition->InstrumentID << " position direction: "
-            << pInvestorPosition->PosiDirection << " position: "
-            << pInvestorPosition->Position << " long frozen: "
-            << pInvestorPosition->LongFrozen << " short frozen: "
-            << pInvestorPosition->ShortFrozen << " "
+        cout << "--->>>\t" << pInvestorPosition->InstrumentID
+            << " position direction: "
+            << pInvestorPosition->PosiDirection
+            << " hedgeFlag: "
+            << pInvestorPosition->HedgeFlag
+            << " positionDate: "
+            << pInvestorPosition->PositionDate
+            << " YdPosition: "
+            << pInvestorPosition->YdPosition
+            << " position: "
+            << pInvestorPosition->Position
+            << " long frozen: "
+            << pInvestorPosition->LongFrozen
+            << " short frozen: "
+            << pInvestorPosition->ShortFrozen
+            << " LongFrozenAmount: "
+            << pInvestorPosition->LongFrozenAmount
+            << " ShortFrozenAmount: "
+            << pInvestorPosition->ShortFrozenAmount
+            << " OpenVolume: "
+            << pInvestorPosition->OpenVolume
+            << " CloseVolume: "
+            << pInvestorPosition->CloseVolume
+            << " OpenAmount: "
+            << pInvestorPosition->OpenAmount
+            << " CloseAmount: "
+            << pInvestorPosition->CloseAmount
+            << " PositionCost: "
+            << pInvestorPosition->PositionCost
+            << " PreMargin: "
+            << pInvestorPosition->PreMargin
+            << " UseMargin: "
+            << pInvestorPosition->UseMargin
+            << " FrozenMargin: "
+            << pInvestorPosition->FrozenMargin
+            << " FrozenCash: "
+            << pInvestorPosition->FrozenCash
+            << " FrozenCommission: "
+            << pInvestorPosition->FrozenCommission
+            << " CashIn: "
+            << pInvestorPosition->CashIn
+            << " Commission: "
+            << pInvestorPosition->Commission
+            << " CloseProfit: "
+            << pInvestorPosition->CloseProfit
+            << " PositionProfit: "
+            << pInvestorPosition->PositionProfit
+            << " PreSettlementPrice: "
+            << pInvestorPosition->PreSettlementPrice
+            << " SettlementPrice: "
+            << pInvestorPosition->SettlementPrice
+            << " TradingDay: "
+            << pInvestorPosition->TradingDay
+            << " OpenCost: "
+            << pInvestorPosition->OpenCost
+            << " ExchangeMargin: "
+            << pInvestorPosition->ExchangeMargin
+            << " CombPosition: "
+            << pInvestorPosition->CombPosition
+            << " CombLongFrozen: "
+            << pInvestorPosition->CombLongFrozen
+            << " CombShortFrozen: "
+            << pInvestorPosition->CombShortFrozen
+            << " CloseProfitByDate: "
+            << pInvestorPosition->CloseProfitByDate
+            << " CloseProfitByTrade: "
+            << pInvestorPosition->CloseProfitByTrade
+            << " TodayPosition: "
+            << pInvestorPosition->TodayPosition
+            << " MarginRateByMoney: "
+            << pInvestorPosition->MarginRateByMoney
+            << " MarginRateByVolume: "
+            << pInvestorPosition->MarginRateByVolume
+            << " StrikeFrozen: "
+            << pInvestorPosition->StrikeFrozen
+            << " StrikeFrozenAmount: "
+            << pInvestorPosition->StrikeFrozenAmount
+            << " AbandonFrozen: "
+            << pInvestorPosition->AbandonFrozen
+            << " "
             << endl;
     }
 }

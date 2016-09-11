@@ -62,10 +62,22 @@ int main()
 
     std::cout << "start waiting for RspSettlementInfoConfirm" << std::endl;
     RspSettlementEvent.Wait();
-    std::cout << "got it" << std::endl;
-    pUserSpi->ReqQryTradingAccount();
+    std::cout << "Wait return ! RspSettlementEvent" << std::endl;
+    int iResult;
+    iResult = pUserSpi->ReqQryTradingAccount();
+    if (0 != iResult)
+    {
+        std::cout << "" << std::endl;
+    }
+    std::cout << "start waiting for RspQryTradingEvent" << std::endl;
     RspQryTradingEvent.Wait();
-    pUserSpi->ReqQryInvestorPosition();
+    std::cout << "Wait return ! RspQryTradingEvent" << std::endl;
+    iResult = pUserSpi->ReqQryInvestorPosition();
+    if (0 != iResult)
+    {
+        MySleep(1);
+        pUserSpi->ReqQryInvestorPosition();
+    }
     // MySleep(1);
     // 报单录入请求
     //pUserSpi->ReqOrderInsert(INSTRUMENT_ID, 4336.0, 1);
