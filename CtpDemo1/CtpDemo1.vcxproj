@@ -116,8 +116,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CtpDemo1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyTraderSpi.cpp" />
+    <ClCompile Include="tools\config_impl.cpp" />
+    <ClCompile Include="tools\event.cpp" />
+    <ClCompile Include="tools\frame_app.cpp" />
+    <ClCompile Include="tools\log_impl.cpp" />
+    <ClCompile Include="tools\options_impl.cpp" />
+    <ClCompile Include="tools\thread.cpp" />
+    <ClCompile Include="tools\thread_mutex.cpp" />
+    <ClCompile Include="tools\util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="error.xml" />
@@ -128,6 +137,20 @@
     <ClInclude Include="ThostFtdcTraderApi.h" />
     <ClInclude Include="ThostFtdcUserApiDataType.h" />
     <ClInclude Include="ThostFtdcUserApiStruct.h" />
+    <ClInclude Include="tools\config_env.h" />
+    <ClInclude Include="tools\config_impl.h" />
+    <ClInclude Include="tools\config_interface.h" />
+    <ClInclude Include="tools\config_posix.h" />
+    <ClInclude Include="tools\event.h" />
+    <ClInclude Include="tools\event_id.h" />
+    <ClInclude Include="tools\frame_app.h" />
+    <ClInclude Include="tools\glbdef.h" />
+    <ClInclude Include="tools\log_impl.h" />
+    <ClInclude Include="tools\log_interface.h" />
+    <ClInclude Include="tools\options_impl.h" />
+    <ClInclude Include="tools\options_interface.h" />
+    <ClInclude Include="tools\thread.h" />
+    <ClInclude Include="tools\thread_mutex.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="thosttraderapi.lib" />
