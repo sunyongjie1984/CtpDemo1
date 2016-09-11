@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#include "event.h"
 #else
 #include <Windows.h>
 #endif
@@ -25,6 +26,8 @@ TThostFtdcPriceType LIMIT_PRICE = 38850;               // 价格
 
 // 请求编号
 int iRequestID = 0;
+CEvent RspSettlementEvent;
+CEvent RspQryTradingEvent;
 /**
  *  * functions to handle the signal of SIGUSR1
  *   * if the value of static variable iExtFlag is not equal zero, this func will exit without waiting for the main function to do to other things.
@@ -57,14 +60,16 @@ int main()
     pUserApi->RegisterFront(FRONT_ADDR);                   // connect
     pUserApi->Init();
 
-    MySleep(5);
+    std::cout << "start waiting for RspSettlementInfoConfirm" << std::endl;
+    RspSettlementEvent.Wait();
+    std::cout << "got it" << std::endl;
     pUserSpi->ReqQryTradingAccount();
-    // MySleep(2);
-    // pUserSpi->ReqQryInvestorPosition();
+    RspQryTradingEvent.Wait();
+    pUserSpi->ReqQryInvestorPosition();
     // MySleep(1);
     // 报单录入请求
     //pUserSpi->ReqOrderInsert(INSTRUMENT_ID, 4336.0, 1);
-    MySleep(1);
+    // MySleep(1);
     // pUserSpi->ReqQryInstrument();
     // MySleep(1);
     // pUserSpi->ReqQryOrder();

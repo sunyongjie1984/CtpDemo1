@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#include "event.h"
 #else
 #include <Windows.h>
 #endif
@@ -29,6 +30,7 @@ extern TThostFtdcDirectionType DIRECTION; // 买卖方向
 
 // 请求编号
 extern int iRequestID;
+extern CEvent RspSettlementEvent;
 
 // 会话参数
 TThostFtdcFrontIDType FRONT_ID;     // 前置编号
@@ -77,7 +79,6 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
         cout << "--->>>\tMaxOrderRef = " << pRspUserLogin->MaxOrderRef << endl;
         // 获取当前交易日
         cout << "--->>>\t获取当前交易日 = " << pUserApi->GetTradingDay() << endl;
-        MySleep(1);
         // 投资者结算结果确认
         ReqSettlementInfoConfirm();
     }
@@ -104,9 +105,8 @@ void CTraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField
     cout << "--->>>\tOnRsp iRequestID=: " << iRequestID << endl;
     if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
-        MySleep(1);
+        RspSettlementEvent.Set();
     }
-    // ReqQryOrder();
 }
 
 // 请求查询合约
