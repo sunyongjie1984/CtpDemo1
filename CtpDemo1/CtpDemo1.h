@@ -27,11 +27,11 @@
 /// 组播接收本地记录的数据文件
 #define TSSERVER_DATA "ts_server.dat"
 
-class CTS_APP: public CFrameApp
+class CCtpDemo1: public CFrameApp
 {
 public:
-    CTS_APP() { }
-    ~CTS_APP()
+    CCtpDemo1() { }
+    ~CCtpDemo1()
     {
         // pUserApi->Join();
     }
@@ -50,7 +50,7 @@ private:
     int QueryTradingAccountAndPosition();
 };
 
-extern CTS_APP* pApp;
+extern CCtpDemo1* pApp;
 #define CAPP pApp
 
 #endif /* _TS_APP_H_ */

@@ -20,8 +20,8 @@
 #include "event_id.h"
 
 ///定义主框架
-static CTS_APP g_TS_APP;
-CTS_APP* pApp = &g_TS_APP;
+static CCtpDemo1 g_TS_APP;
+CCtpDemo1* pApp = &g_TS_APP;
 // UserApi对象
 CThostFtdcTraderApi* pUserApi;
 CTraderSpi* pUserSpi;
@@ -62,7 +62,7 @@ void MySleep(const int n)
 }
 
 // 重载基类的init函数 完成交易撮合主机的初始化操作
-int32_t CTS_APP::init(int32_t argc, char** argv)
+int32_t CCtpDemo1::init(int32_t argc, char** argv)
 {
     NOTICE(TS_INFO_START, "CtpDemo1 start");
     NOTICE(TS_NOTICE_STATRTINIT, "CtpDemo1 init start");
@@ -81,7 +81,7 @@ int32_t CTS_APP::init(int32_t argc, char** argv)
     return 0;
 }
 
-int CTS_APP::QueryTradingAccountAndPosition()
+int CCtpDemo1::QueryTradingAccountAndPosition()
 {
     int iResult;
     INFO(0, "start waiting for RspSettlementInfoConfirm");
@@ -106,14 +106,14 @@ int CTS_APP::QueryTradingAccountAndPosition()
 }
 
 // 重载基类的fini函数，用于结束撮合主机
-int32_t CTS_APP::fini()
+int32_t CCtpDemo1::fini()
 {
     NOTICE(TS_INFO_BEGIN_STOP, "CtpDemo1 stoping");
     return 0;
 }
 
 // 重载基类函数 用于指定版本号
-const char* CTS_APP::version() const
+const char* CCtpDemo1::version() const
 {
     return APP_VERSION;
 }
