@@ -76,6 +76,7 @@ int32_t CTS_APP::init(int32_t argc, char** argv)
     pUserApi->RegisterFront(FRONT_ADDR);                   // connect
     pUserApi->Init();
     QueryTradingAccountAndPosition();
+    pUserApi->Join();
     NOTICE(TS_NOTICE_FINISHINIT, "CtpDemo1 init finished");
     return 0;
 }

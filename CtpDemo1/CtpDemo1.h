@@ -31,6 +31,10 @@ class CTS_APP: public CFrameApp
 {
 public:
     CTS_APP() { }
+    ~CTS_APP()
+    {
+        // pUserApi->Join();
+    }
     ///初始化接口
    virtual int32_t init(int32_t argc, char** argv);
 
