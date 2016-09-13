@@ -24,7 +24,7 @@ CtpDemo1.o: CtpDemo1.cpp
 	g++ -c ${cflag} CtpDemo1.cpp ${INCLUDE}
 frame_app.o: tools/frame_app.cpp
 	g++ -c ${cflag} tools/frame_app.cpp ${INCLUDE}
-clean :
+clean:
 	rm -rf *.o CtpDemo1 *.dSYM *.log *.con core*
-allclean :
+allclean:
 	rm -rf *.o CtpDemo1 *.dSYM *.log *.con core* log/*
