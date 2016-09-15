@@ -83,7 +83,7 @@ int32_t CCtpDemo1::init(int32_t argc, char** argv)
 int CCtpDemo1::QueryTradingAccountAndPosition()
 {
     int iResult;
-    INFO(0, "start waiting for RspSettlementInfoConfirm");
+    INFO(CTPDEMO1_DEBUG, "Enter %s", __FUNCTION__);
     DEBUG(CTPDEMO1_DEBUG, "start waiting for RspSettlementInfoConfirm");
     RspSettlementEvent.Wait();
     DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspSettlementIffoConfirm");
