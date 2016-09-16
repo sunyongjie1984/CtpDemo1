@@ -64,7 +64,7 @@ public:
     void stop();
 protected:
     ///终止程序开关
-    volatile int32_t m_iShutdown;
+    volatile bool m_iShutdown;
     // 主线程工作函数
     virtual void work();
 

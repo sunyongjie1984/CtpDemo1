@@ -117,7 +117,7 @@ COptionsInterface* CFrameApp::Options()
 
 //////////////////////////////////////////////////////////////////////////
 CFrameApp::CFrameApp()
-: m_iShutdown(0)
+: m_iShutdown(false)
 , m_iPidFd(0)
 , m_lpLog(CLOG)
 , m_lpConfig(CCONFIG)

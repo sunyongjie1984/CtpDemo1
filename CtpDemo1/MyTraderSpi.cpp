@@ -281,7 +281,13 @@ void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
 }
 
 // 报单录入请求
-void CTraderSpi::ReqOrderInsert(const char* const pInstrument_ID, const double price, const int amount)
+void CTraderSpi::ReqOrderInsert(const CThostFtdcInputOrderField* pOrder)
+{
+	DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
+}
+
+// 报单录入请求
+void CTraderSpi::ReqOrderInsert(const char* const pInstrument_ID, const TThostFtdcDirectionType direction, const TThostFtdcOffsetFlagType flag, const double price, const int amount)
 {
     DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     CThostFtdcInputOrderField req;
@@ -299,9 +305,9 @@ void CTraderSpi::ReqOrderInsert(const char* const pInstrument_ID, const double p
     // 报单价格条件: 限价
     req.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
     // 买卖方向: 
-    req.Direction = DIRECTION;
+    req.Direction = direction;
     // 组合开平标志: 开仓
-    req.CombOffsetFlag[0] = THOST_FTDC_OF_Open;
+    req.CombOffsetFlag[0] = flag;
     // 组合投机套保标志
     req.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation;
     // 价格

@@ -49,7 +49,9 @@ public:
     ///请求查询报单
     void ReqQryOrder();
     // 报单录入请求
-    void ReqOrderInsert(const char* const, const double, const int);
+	void ReqOrderInsert(const CThostFtdcInputOrderField* pOrder);
+    // 报单录入请求
+	void ReqOrderInsert(const char* const pInstrument_ID, const TThostFtdcDirectionType direction, const TThostFtdcOffsetFlagType flag, const double price, const int amount)
     // 报单操作请求
     void ReqOrderAction(CThostFtdcOrderField *pOrder);
     // 报单操作请求--撤单

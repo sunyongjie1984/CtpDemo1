@@ -70,6 +70,7 @@ int32_t CCtpDemo1::init(int32_t argc, char** argv)
 {
     NOTICE(TS_INFO_START, "CtpDemo1 start");
     NOTICE(TS_NOTICE_STATRTINIT, "CtpDemo1 init start");
+    NOTICE(TS_NOTICE_STATRTINIT, "CtpDemo1 version %s", version());
     // sigset(SIGUSR1, sTerminate);
     // 初始化UserApi
     pUserApi = CThostFtdcTraderApi::CreateFtdcTraderApi(); // 创建UserApi
@@ -94,13 +95,13 @@ void CCtpDemo1::work()
 {
     INFO(CTPDEMO1_DEBUG, "Enter %s", __FUNCTION__);
     /* 主线程等待系统终止信号 */
-    while (m_iShutdown == 0)
+    while (!m_iShutdown)
     {
         usleep(100 * 1000);
         unsigned int option;
-        DEBUG(CTPDEMO1_DEBUG, "0:QueryTradingAccount() ");
-        DEBUG(CTPDEMO1_DEBUG, "1:QueryInvestorPosition() ");
-        DEBUG(CTPDEMO1_DEBUG, "2:iiii() ");
+        DEBUG(CTPDEMO1_DEBUG, "0: QueryTradingAccount");
+        DEBUG(CTPDEMO1_DEBUG, "1: QueryInvestorPosition");
+        DEBUG(CTPDEMO1_DEBUG, "9: exit);
         std::cin >> option;
         switch (option)
           {
@@ -110,13 +111,28 @@ void CCtpDemo1::work()
               case 1:
                   QueryInvestorPosition();
                   break;
-              case 2:
+              case 9:
+				  m_iShutdown = true;
                   break;
               default:
                   break;
           }
     }
     return;
+}
+
+
+int CCtpDemo1::OrderInsert(CThostFtdcInputOrderField* pOrder) const
+{
+// const char* const pInstrument_ID, const TThostFtdcDirectionType direction, const TThostFtdcOffsetFlagType flag, const double price, const int amount)
+	CThostFtdcInputOrderField order;
+	memset(&order, 0, sizeof(order));
+	const char* pInstrument_ID = "ag1612";
+	const TThostFtdcDirectionType direction = THOST_FTDC_D_Buy;
+	TThostFtdcOffsetFlagType flag = THOST_FTDC_OF_Close;
+	TThostFtdcMoneyType price = 4430;
+	TThostFtdcVolumeType amount = 14;
+	pUserSpi->ReqOrderInsert(pInstrument_ID, direction, flag, price, amount);
 }
 
 int CCtpDemo1::QueryTradingAccount()
@@ -128,7 +144,6 @@ int CCtpDemo1::QueryTradingAccount()
     if (0 != iResult)
     {
         DEBUG(CTPDEMO1_DEBUG, "iResult = %d", iResult);
-        DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryTradingEvent");
     }
     DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryTradingEvent");
     RspQryTradingEvent.Wait();
@@ -145,7 +160,6 @@ int CCtpDemo1::QueryInvestorPosition()
     if (0 != iResult)
     {
         DEBUG(CTPDEMO1_DEBUG, "iResult = %d", iResult);
-        DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryTradingEvent");
     }
     DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryPositionEvent");
     RspQryPositionEvent.Wait();

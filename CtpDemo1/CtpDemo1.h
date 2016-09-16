@@ -17,7 +17,7 @@
 #include "frame_app.h"
 
 /// 版本信息
-#define APP_VERSION "V3.0.0 ("__DATE__" "__TIME__")"
+#define APP_VERSION "V1.0.0 ("__DATE__" "__TIME__")"
 /// 应用相关在配置文件中的段名
 #define TS_SEC_APP "APP"
 /// 组播接收模块相关在配置文件中的段名
@@ -50,6 +50,7 @@ public:
 protected:
 
 private:
+    int OrderInsert(CThostFtdcInputOrderField* pOrder) const;
     int QueryTradingAccount();
     int QueryInvestorPosition();
 };
