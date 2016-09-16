@@ -35,19 +35,23 @@ public:
     {
         // pUserApi->Join();
     }
-    ///初始化接口
-   virtual int32_t init(int32_t argc, char** argv);
+    // 初始化接口
+    virtual int32_t init(int32_t argc, char** argv);
 
-    ///结束接口
+    // 主线程工作函数
+    void work();
+
+    // 结束接口
     virtual int32_t fini();
 
-    ///版本信息接口
+    // 版本信息接口
     virtual const char* version() const;
 
 protected:
 
 private:
-    int QueryTradingAccountAndPosition();
+    int QueryTradingAccount();
+    int QueryInvestorPosition();
 };
 
 extern CCtpDemo1* pApp;

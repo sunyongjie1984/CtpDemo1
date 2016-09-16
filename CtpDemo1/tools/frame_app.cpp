@@ -143,7 +143,8 @@ void CFrameApp::run(int32_t argc, char** argv)
     if (0 == this->init(argc, argv))
     {
         /* 4.主线程工作函数 */
-        CFrameApp::work();
+        // CFrameApp::work();
+        work();
     }
 
     /* 5.结束派生类 */
@@ -221,7 +222,10 @@ void CFrameApp::regist_signal() const
 void CFrameApp::work() const
 {
     /* 主线程等待系统终止信号 */
-    while (m_iShutdown == 0) usleep(100*1000);
+    while (m_iShutdown == 0)
+    {
+        usleep(100*1000);
+    }
     return;
 }
 

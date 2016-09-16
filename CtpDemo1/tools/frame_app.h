@@ -62,6 +62,11 @@ public:
 
     ///进程终止函数
     void stop();
+protected:
+    ///终止程序开关
+    volatile int32_t m_iShutdown;
+    // 主线程工作函数
+    virtual void work();
 
 private:
     ///屏蔽拷贝构造函数
@@ -77,7 +82,7 @@ private:
     void regist_signal() const;
 
     ///主线程工作函数
-    void work() const;
+    //void work() const;
 
     ///显示命令行使用格式
     void show_usage() const;
@@ -99,7 +104,7 @@ private:
 
 private:
     ///终止程序开关
-    volatile int32_t m_iShutdown;
+    // volatile int32_t m_iShutdown;
 
     ///pid文件句柄
     int32_t m_iPidFd;

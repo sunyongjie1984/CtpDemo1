@@ -32,8 +32,10 @@ extern TThostFtdcDirectionType DIRECTION; // 买卖方向
 
 // 请求编号
 extern int iRequestID;
+// Events
 extern CEvent RspSettlementEvent;
 extern CEvent RspQryTradingEvent;
+extern CEvent RspQryPositionEvent;
 
 // 会话参数
 TThostFtdcFrontIDType FRONT_ID;     // 前置编号
@@ -82,7 +84,7 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
         // 获取当前交易日
         DEBUG(CTPDEMO1_DEBUG, "TradingDay=: %s", pUserApi->GetTradingDay());
         // 投资者结算结果确认
-        ReqSettlementInfoConfirm();
+        // ReqSettlementInfoConfirm();
     }
     return;
 }
@@ -126,11 +128,11 @@ void CTraderSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CTho
 {
     DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     DEBUG(CTPDEMO1_DEBUG, "OnRsp iRequestID=: %d", iRequestID);
-	if (bIsLast && !IsErrorRspInfo(pRspInfo))
+    if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
-		cout << "--->>> InstrumentID=: " << pInstrument->InstrumentID << endl;
-		cout << "--->>> InstrumentName=: " << pInstrument->InstrumentName << endl;
-		MySleep(1);
+        cout << "--->>> InstrumentID=: " << pInstrument->InstrumentID << endl;
+        cout << "--->>> InstrumentName=: " << pInstrument->InstrumentName << endl;
+        MySleep(1);
     }
 }
 
@@ -232,7 +234,7 @@ void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
     // if (bIsLast && !IsErrorRspInfo(pRspInfo))
     if (!IsErrorRspInfo(pRspInfo))
     {
-        DEBUG(CTPDEMO1_DEBUG, "%s ,PosiDirection %c, HedgeFlag %c, PositionDate %c, YdPosition %d, Position %d, LongFrozen %d, ShortFrozen %d, LongFrozenAmount %lf, ShortFrozenAmount %lf, OpenVolume %d, CloseVolume %d, OpenAmount %lf, CloseAmount %lf, PositionCost %lf, PreMargin %lf, UseMargin %lf, FrozenMargin %lf, FrozenCash %lf, FrozenCommission %lf, CashIn %lf, Commission %lf, CloseProfit %lf, PositionProfit %lf, PreSettlementPrice %lf, SettlementPrice %lf, TradingDay %s, SettlementID %d, OpenCost %lf, ExchangeMargin %lf, CombPosition %d, CombLongFrozen %d, CombShortFrozen %d, CloseProfitByDate %lf, CloseProfitByTrade %lf, TodayPosition: %d, MarginRateByMoney %lf, MarginRateByVolume %lf, StrikeFrozen %d, StrikeFrozenAmount %lf, AbandonFrozen %d",
+        DEBUG(CTPDEMO1_DEBUG, "%s ,持仓多空方向PosiDirection %c, 投机套保标志HedgeFlag %c, 持仓日期PositionDate %c, 上日持仓YdPosition %d, 今日持仓Position %d, 多头冻结LongFrozen %d, 空头冻结ShortFrozen %d, 开仓冻结金额LongFrozenAmount %lf, 开仓冻结金额ShortFrozenAmount %lf, 开仓量OpenVolume %d, 平仓量CloseVolume %d, 开仓金额OpenAmount %lf, 平仓金额CloseAmount %lf, 持仓成本PositionCost %lf, 上次占用的保证金PreMargin %lf, 占用的保证金UseMargin %lf, 冻结的保证金FrozenMargin %lf, 冻结的资金FrozenCash %lf, 冻结的手续费FrozenCommission %lf, 资金差额CashIn %lf, 手续费Commission %lf, 平仓盈亏CloseProfit %lf, 持仓盈亏PositionProfit %lf, 上次结算价PreSettlementPrice %lf, 本次结算价SettlementPrice %lf, 交易日TradingDay %s, 结算编号SettlementID %d, 开仓成本OpenCost %lf, 交易所保证金ExchangeMargin %lf, 组合成交形成的持仓CombPosition %d, 组合多头冻结CombLongFrozen %d, 组合空头冻结CombShortFrozen %d, 逐日盯市平仓盈亏CloseProfitByDate %lf, 逐笔对冲平仓盈亏CloseProfitByTrade %lf, 今日持仓TodayPosition: %d, 保证金率MarginRateByMoney %lf, 保证金率(按手数)MarginRateByVolume %lf, 执行冻结StrikeFrozen %d, 执行冻结金额StrikeFrozenAmount %lf, 放弃执行冻结AbandonFrozen %d",
                 pInvestorPosition->InstrumentID,
                 pInvestorPosition->PosiDirection,
                 pInvestorPosition->HedgeFlag,
@@ -275,6 +277,7 @@ void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
                 pInvestorPosition->StrikeFrozenAmount,
                 pInvestorPosition->AbandonFrozen);
     }
+    RspQryPositionEvent.Set();
 }
 
 // 报单录入请求
@@ -467,19 +470,19 @@ void CTraderSpi::OnRtnTrade(CThostFtdcTradeField *pTrade)
 void CTraderSpi::OnFrontDisconnected(int nReason)
 {
     DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
-	cout << "--->>> Reason = " << nReason << endl;
+    cout << "--->>> Reason = " << nReason << endl;
 }
 
 void CTraderSpi::OnHeartBeatWarning(int nTimeLapse)
 {
     DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
-	cout << "--->>> nTimerLapse = " << nTimeLapse << endl;
+    cout << "--->>> nTimerLapse = " << nTimeLapse << endl;
 }
 
 void CTraderSpi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
     DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
-	IsErrorRspInfo(pRspInfo);
+    IsErrorRspInfo(pRspInfo);
 }
 
 bool CTraderSpi::IsErrorRspInfo(const CThostFtdcRspInfoField* const pRspInfo) const

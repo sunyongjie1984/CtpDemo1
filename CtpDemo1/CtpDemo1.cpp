@@ -38,8 +38,11 @@ TThostFtdcPriceType LIMIT_PRICE = 38850;               // 价格
 
 // 请求编号
 int iRequestID = 0;
+
+// Events
 CEvent RspSettlementEvent;
 CEvent RspQryTradingEvent;
+CEvent RspQryPositionEvent;
 /*
  *   functions to handle the signal of SIGUSR1
  *    if the value of static variable iExtFlag is not equal zero, this func will exit without waiting for the main function to do to other things.
@@ -54,6 +57,7 @@ CEvent RspQryTradingEvent;
 
 void MySleep(const int n)
 {
+    INFO(CTPDEMO1_DEBUG, "Enter %s", __FUNCTION__);
 #ifdef _linux
     sleep(n);
 #else
@@ -74,39 +78,85 @@ int32_t CCtpDemo1::init(int32_t argc, char** argv)
     pUserApi->SubscribePublicTopic(THOST_TERT_RESTART);    // 注册公有流
     pUserApi->SubscribePrivateTopic(THOST_TERT_RESTART);   // 注册私有流
     pUserApi->RegisterFront(FRONT_ADDR);                   // connect
+    NOTICE(TS_NOTICE_STATRTINIT, "front address: %s", FRONT_ADDR);
     pUserApi->Init();
-    QueryTradingAccountAndPosition();
+
+    sleep(1);
+    // 投资者结算结果确认
+    pUserSpi->ReqSettlementInfoConfirm();
+    RspSettlementEvent.Wait();
+    DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspSettlementIffoConfirm");
     NOTICE(TS_NOTICE_FINISHINIT, "CtpDemo1 init finished");
     return 0;
 }
 
-int CCtpDemo1::QueryTradingAccountAndPosition()
+void CCtpDemo1::work()
 {
-    int iResult;
     INFO(CTPDEMO1_DEBUG, "Enter %s", __FUNCTION__);
-    DEBUG(CTPDEMO1_DEBUG, "start waiting for RspSettlementInfoConfirm");
-    RspSettlementEvent.Wait();
-    DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspSettlementIffoConfirm");
+    /* 主线程等待系统终止信号 */
+    while (m_iShutdown == 0)
+    {
+        usleep(100 * 1000);
+        unsigned int option;
+        DEBUG(CTPDEMO1_DEBUG, "0:QueryTradingAccount() ");
+        DEBUG(CTPDEMO1_DEBUG, "1:QueryInvestorPosition() ");
+        DEBUG(CTPDEMO1_DEBUG, "2:iiii() ");
+        std::cin >> option;
+        switch (option)
+          {
+              case 0:
+                  QueryTradingAccount();
+                  break;
+              case 1:
+                  QueryInvestorPosition();
+                  break;
+              case 2:
+                  break;
+              default:
+                  break;
+          }
+    }
+    return;
+}
+
+int CCtpDemo1::QueryTradingAccount()
+{
+    INFO(CTPDEMO1_DEBUG, "Enter %s", __FUNCTION__);
+    sleep(1);
+    int iResult;
     iResult = pUserSpi->ReqQryTradingAccount();
     if (0 != iResult)
     {
-        std::cout << "" << std::endl;
+        DEBUG(CTPDEMO1_DEBUG, "iResult = %d", iResult);
+        DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryTradingEvent");
     }
     DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryTradingEvent");
     RspQryTradingEvent.Wait();
     DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspQryTradingEvent");
+    return iResult;
+}
+
+int CCtpDemo1::QueryInvestorPosition()
+{
+    INFO(CTPDEMO1_DEBUG, "Enter %s", __FUNCTION__);
+    MySleep(1);
+    int iResult;
     iResult = pUserSpi->ReqQryInvestorPosition();
     if (0 != iResult)
     {
-        MySleep(1);
-        pUserSpi->ReqQryInvestorPosition();
+        DEBUG(CTPDEMO1_DEBUG, "iResult = %d", iResult);
+        DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryTradingEvent");
     }
+    DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryPositionEvent");
+    RspQryPositionEvent.Wait();
+    DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspQryPositionEvent");
     return iResult;
 }
 
 // 重载基类的fini函数，用于结束撮合主机
 int32_t CCtpDemo1::fini()
 {
+    INFO(CTPDEMO1_DEBUG, "Enter %s", __FUNCTION__);
     NOTICE(TS_INFO_BEGIN_STOP, "CtpDemo1 stoping");
     return 0;
 }
@@ -114,6 +164,7 @@ int32_t CCtpDemo1::fini()
 // 重载基类函数 用于指定版本号
 const char* CCtpDemo1::version() const
 {
+    INFO(CTPDEMO1_DEBUG, "Enter %s", __FUNCTION__);
     return APP_VERSION;
 }
 

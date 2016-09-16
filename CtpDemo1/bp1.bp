@@ -11,3 +11,5 @@ break CTraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmFiel
 break CTraderSpi::IsTradingOrder
 break CTraderSpi::OnRspQryOrder
 break CTraderSpi::ReqQryInvestorPosition
+break CCtpDemo1::work
+break CFrameApp::work
