@@ -80,7 +80,7 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
         ShowRspUserLoginField(pRspUserLogin);
         DEBUG(CTPDEMO1_DEBUG, "FrontID=: %d", FRONT_ID);
         DEBUG(CTPDEMO1_DEBUG, "SESSION_ID=: %d", SESSION_ID);
-        DEBUG(CTPDEMO1_DEBUG, "MaxOrderRef=: %d", pRspUserLogin->MaxOrderRef);
+        DEBUG(CTPDEMO1_DEBUG, "MaxOrderRef=: %s", atoi(pRspUserLogin->MaxOrderRef));
         // 获取当前交易日
         DEBUG(CTPDEMO1_DEBUG, "TradingDay=: %s", pUserApi->GetTradingDay());
         // 投资者结算结果确认
@@ -108,7 +108,7 @@ void CTraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField
     DEBUG(CTPDEMO1_DEBUG, "OnRsp iRequestID=: %d", iRequestID);
     if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
-        RspSettlementEvent.Set();
+        // RspSettlementEvent.Set();
     }
 }
 
@@ -204,7 +204,7 @@ void CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingA
         pTradingAccount->SpecProductPositionProfitByAlg,
         pTradingAccount->SpecProductExchangeMargin);
     }
-    RspQryTradingEvent.Set();
+    // RspQryTradingEvent.Set();
 }
 
 // 请求查询投资者持仓
@@ -277,7 +277,7 @@ void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
                 pInvestorPosition->StrikeFrozenAmount,
                 pInvestorPosition->AbandonFrozen);
     }
-    RspQryPositionEvent.Set();
+    // RspQryPositionEvent.Set();
 }
 
 // 报单录入请求
@@ -305,7 +305,7 @@ int CTraderSpi::ReqOrderInsert(const char* const pInstrument_ID, const TThostFtd
     //  TThostFtdcUserIDType    UserID;
     // 报单价格条件: 限价
     req.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
-    // 买卖方向: 
+    // 买卖方向:
     req.Direction = direction;
     // 组合开平标志: 开仓
     req.CombOffsetFlag[0] = flag;

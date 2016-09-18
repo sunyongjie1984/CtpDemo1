@@ -85,8 +85,8 @@ int32_t CCtpDemo1::init(int32_t argc, char** argv)
     sleep(1);
     // 投资者结算结果确认
     pUserSpi->ReqSettlementInfoConfirm();
-    RspSettlementEvent.Wait();
-    DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspSettlementIffoConfirm");
+    // RspSettlementEvent.Wait();
+    // DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspSettlementIffoConfirm");
     NOTICE(TS_NOTICE_FINISHINIT, "CtpDemo1 init finished");
     return 0;
 }
@@ -101,6 +101,7 @@ void CCtpDemo1::work()
         unsigned int option;
         DEBUG(CTPDEMO1_DEBUG, "0: QueryTradingAccount");
         DEBUG(CTPDEMO1_DEBUG, "1: QueryInvestorPosition");
+        DEBUG(CTPDEMO1_DEBUG, "2: OrderInsert");
         DEBUG(CTPDEMO1_DEBUG, "9: exit");
         std::cin >> option;
         switch (option)
@@ -118,6 +119,7 @@ void CCtpDemo1::work()
                   m_iShutdown = true;
                   break;
               default:
+                  DEBUG(CTPDEMO1_DEBUG, "Please Input the right option");
                   break;
           }
     }
@@ -141,9 +143,6 @@ int CCtpDemo1::OrderInsert() const
     {
         DEBUG(CTPDEMO1_DEBUG, "iResult = %d", iResult);
     }
-    DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryTradingEvent");
-    // RspQryTradingEvent.Wait();
-    DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspQryTradingEvent");
     return iResult;
 }
 
@@ -157,9 +156,9 @@ int CCtpDemo1::QueryTradingAccount()
     {
         DEBUG(CTPDEMO1_DEBUG, "iResult = %d", iResult);
     }
-    DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryTradingEvent");
-    RspQryTradingEvent.Wait();
-    DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspQryTradingEvent");
+    // DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryTradingEvent");
+    // RspQryTradingEvent.Wait();
+    // DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspQryTradingEvent");
     return iResult;
 }
 
@@ -173,9 +172,9 @@ int CCtpDemo1::QueryInvestorPosition()
     {
         DEBUG(CTPDEMO1_DEBUG, "iResult = %d", iResult);
     }
-    DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryPositionEvent");
-    RspQryPositionEvent.Wait();
-    DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspQryPositionEvent");
+    // DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryPositionEvent");
+    // RspQryPositionEvent.Wait();
+    // DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspQryPositionEvent");
     return iResult;
 }
 
