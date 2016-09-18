@@ -281,13 +281,14 @@ void CTraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInve
 }
 
 // 报单录入请求
-void CTraderSpi::ReqOrderInsert(const CThostFtdcInputOrderField* pOrder)
+int CTraderSpi::ReqOrderInsert(const CThostFtdcInputOrderField* pOrder)
 {
-	DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
+    DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
+    return 0;
 }
 
 // 报单录入请求
-void CTraderSpi::ReqOrderInsert(const char* const pInstrument_ID, const TThostFtdcDirectionType direction, const TThostFtdcOffsetFlagType flag, const double price, const int amount)
+int CTraderSpi::ReqOrderInsert(const char* const pInstrument_ID, const TThostFtdcDirectionType direction, const TThostFtdcOffsetFlagType flag, const double price, const int amount)
 {
     DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     CThostFtdcInputOrderField req;
@@ -340,6 +341,7 @@ void CTraderSpi::ReqOrderInsert(const char* const pInstrument_ID, const TThostFt
     int iResult = pUserApi->ReqOrderInsert(&req, ++iRequestID);
     DEBUG(CTPDEMO1_DEBUG, "iRequestID =: %d", iRequestID);
     DEBUG(CTPDEMO1_DEBUG, "iResult =: %d", iResult);
+    return iResult;
 }
 
 void CTraderSpi::OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)

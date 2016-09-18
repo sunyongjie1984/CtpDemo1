@@ -101,7 +101,7 @@ void CCtpDemo1::work()
         unsigned int option;
         DEBUG(CTPDEMO1_DEBUG, "0: QueryTradingAccount");
         DEBUG(CTPDEMO1_DEBUG, "1: QueryInvestorPosition");
-        DEBUG(CTPDEMO1_DEBUG, "9: exit);
+        DEBUG(CTPDEMO1_DEBUG, "9: exit");
         std::cin >> option;
         switch (option)
           {
@@ -111,8 +111,11 @@ void CCtpDemo1::work()
               case 1:
                   QueryInvestorPosition();
                   break;
+              case 2:
+                  OrderInsert();
+                  break;
               case 9:
-				  m_iShutdown = true;
+                  m_iShutdown = true;
                   break;
               default:
                   break;
@@ -122,17 +125,26 @@ void CCtpDemo1::work()
 }
 
 
-int CCtpDemo1::OrderInsert(CThostFtdcInputOrderField* pOrder) const
+int CCtpDemo1::OrderInsert() const
 {
-// const char* const pInstrument_ID, const TThostFtdcDirectionType direction, const TThostFtdcOffsetFlagType flag, const double price, const int amount)
-	CThostFtdcInputOrderField order;
-	memset(&order, 0, sizeof(order));
-	const char* pInstrument_ID = "ag1612";
-	const TThostFtdcDirectionType direction = THOST_FTDC_D_Buy;
-	TThostFtdcOffsetFlagType flag = THOST_FTDC_OF_Close;
-	TThostFtdcMoneyType price = 4430;
-	TThostFtdcVolumeType amount = 14;
-	pUserSpi->ReqOrderInsert(pInstrument_ID, direction, flag, price, amount);
+    INFO(CTPDEMO1_DEBUG, "Enter %s", __FUNCTION__);
+    int iResult;
+    CThostFtdcInputOrderField order;
+    memset(&order, 0, sizeof(order));
+    const char* pInstrument_ID = "ag1612";
+    const TThostFtdcDirectionType direction = THOST_FTDC_D_Buy;
+    TThostFtdcOffsetFlagType flag = THOST_FTDC_OF_Close;
+    TThostFtdcMoneyType price = 4430;
+    TThostFtdcVolumeType amount = 14;
+    iResult = pUserSpi->ReqOrderInsert(pInstrument_ID, direction, flag, price, amount);
+    if (0 != iResult)
+    {
+        DEBUG(CTPDEMO1_DEBUG, "iResult = %d", iResult);
+    }
+    DEBUG(CTPDEMO1_DEBUG, "start waiting for RspQryTradingEvent");
+    // RspQryTradingEvent.Wait();
+    DEBUG(CTPDEMO1_DEBUG, "Wait return ! RspQryTradingEvent");
+    return iResult;
 }
 
 int CCtpDemo1::QueryTradingAccount()

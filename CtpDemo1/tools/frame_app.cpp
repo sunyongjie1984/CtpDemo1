@@ -219,7 +219,7 @@ void CFrameApp::regist_signal() const
     return;
 }
 
-void CFrameApp::work() const
+void CFrameApp::work()
 {
     /* 主线程等待系统终止信号 */
     while (m_iShutdown == 0)

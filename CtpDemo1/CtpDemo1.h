@@ -50,7 +50,7 @@ public:
 protected:
 
 private:
-    int OrderInsert(CThostFtdcInputOrderField* pOrder) const;
+    int OrderInsert() const;
     int QueryTradingAccount();
     int QueryInvestorPosition();
 };
