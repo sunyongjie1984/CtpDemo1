@@ -80,7 +80,7 @@ void CTraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CTho
         ShowRspUserLoginField(pRspUserLogin);
         DEBUG(CTPDEMO1_DEBUG, "FrontID=: %d", FRONT_ID);
         DEBUG(CTPDEMO1_DEBUG, "SESSION_ID=: %d", SESSION_ID);
-        DEBUG(CTPDEMO1_DEBUG, "MaxOrderRef=: %s", atoi(pRspUserLogin->MaxOrderRef));
+        DEBUG(CTPDEMO1_DEBUG, "MaxOrderRef=: %s", pRspUserLogin->MaxOrderRef);
         // 获取当前交易日
         DEBUG(CTPDEMO1_DEBUG, "TradingDay=: %s", pUserApi->GetTradingDay());
         // 投资者结算结果确认
@@ -156,7 +156,7 @@ void CTraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingA
     DEBUG(CTPDEMO1_DEBUG, "OnRsp iRequestID=: %d", iRequestID);
     if (bIsLast && !IsErrorRspInfo(pRspInfo))
     {
-        DEBUG(CTPDEMO1_DEBUG, "经纪公司代码BrokerID: %s 投资者帐号AccountID: %s 上次质押金额PreMortgage: %lf 上次信用额度PreCredit: %lf 上次存款额PreDeposit: %lf 上次结算准备金PreBalance: %lf 上次占用的保证金PreMargin: %lf 利息基数InterestBase: %lf 利息收入Interest: %lf 入金金额Deposit: %lf 出金金额Withdraw: %lf 冻结的保证金FrozenMargin: %lf 冻结的资金FrozenCash: %lf 冻结的手续费FrozenCommission: %lf  当前保证金总额CurrMargin: %lf 资金差额CashIn %lf 手续费Commission: %lf 平仓盈亏CloseProfit: %lf 持仓盈亏PositionProfit: %lf 期货结算准备金Balance: %lf 可用资金Available: %lf 可取资金WithdrawQuota: %lf 基本准备金Reserve: %lf 交易日TradingDay: %s 结算编号SettlementID: %d 信用额度Credit: %lf 质押金额Mortgage: %lf 交易所保证金ExchangeMargin: %lf 投资者交割保证金DeliveryMargin: %lf 交易所交割保证金ExchangeDeliveryMargin: %lf 保底期货结算准备金ReserveBalance: %lf 币种代码CurrencyID: %s 上次货币质入金额PreFundMortgageIn: %lf 上次货币质出金额PreFundMortgageOut: %lf 货币质入金额FundMortgageIn: %lf 货币质出金额FundMortgageOut: %lf 货币质押余额FundMortgageAvailable: %lf 可质押货币金额MortgageableFund: %lf 特殊产品占用保证金SpecProductMargin: %lf 特殊产品冻结保证金SpecProductFrozenMargin: %lf 特殊产品手续费SpecProductCommission: %lf 特殊产品冻结手续费SpecProductFrozenCommission: %lf 特殊产品持仓盈亏SpecProductPositionProfit: %lf 特殊产品平仓盈亏SpecProductCloseProfit: %lf 根据持仓盈亏算法计算的特殊产品持仓盈亏SpecProductPositionProfitByAlg: %lf 特殊产品交易所保证金SpecProductExchangeMargin: %lf",
+        DEBUG(CTPDEMO1_DEBUG, "经纪公司代码BrokerID: %s,投资者帐号AccountID: %s,上次质押金额PreMortgage: %lf,上次信用额度PreCredit: %lf,上次存款额PreDeposit: %lf,上次结算准备金PreBalance: %lf,上次占用的保证金PreMargin: %lf,利息基数InterestBase: %lf,利息收入Interest: %lf,入金金额Deposit: %lf,出金金额Withdraw: %lf,冻结的保证金FrozenMargin: %lf,冻结的资金FrozenCash: %lf,冻结的手续费FrozenCommission: %lf,当前保证金总额CurrMargin: %lf,资金差额CashIn %lf,手续费Commission: %lf,平仓盈亏CloseProfit: %lf,持仓盈亏PositionProfit: %lf,期货结算准备金Balance: %lf,可用资金Available: %lf,可取资金WithdrawQuota: %lf,基本准备金Reserve: %lf,交易日TradingDay: %s,结算编号SettlementID: %d,信用额度Credit: %lf,质押金额Mortgage: %lf,交易所保证金ExchangeMargin: %lf,投资者交割保证金DeliveryMargin: %lf,交易所交割保证金ExchangeDeliveryMargin: %lf,保底期货结算准备金ReserveBalance: %lf,币种代码CurrencyID: %s,上次货币质入金额PreFundMortgageIn: %lf,上次货币质出金额PreFundMortgageOut: %lf,货币质入金额FundMortgageIn: %lf,货币质出金额FundMortgageOut: %lf,货币质押余额FundMortgageAvailable: %lf,可质押货币金额MortgageableFund: %lf,特殊产品占用保证金SpecProductMargin: %lf,特殊产品冻结保证金SpecProductFrozenMargin: %lf,特殊产品手续费SpecProductCommission: %lf,特殊产品冻结手续费SpecProductFrozenCommission: %lf,特殊产品持仓盈亏SpecProductPositionProfit: %lf,特殊产品平仓盈亏SpecProductCloseProfit: %lf,根据持仓盈亏算法计算的特殊产品持仓盈亏SpecProductPositionProfitByAlg: %lf,特殊产品交易所保证金SpecProductExchangeMargin: %lf",
         pTradingAccount->BrokerID,
         pTradingAccount->AccountID,
         pTradingAccount->PreMortgage,
