@@ -137,7 +137,7 @@ int CCtpDemo1::OrderInsert() const
     const TThostFtdcDirectionType direction = THOST_FTDC_D_Buy;
     TThostFtdcOffsetFlagType flag = THOST_FTDC_OF_Close;
     TThostFtdcMoneyType price = 4430;
-    TThostFtdcVolumeType amount = 14;
+    TThostFtdcVolumeType amount = 1;
     iResult = pUserSpi->ReqOrderInsert(pInstrument_ID, direction, flag, price, amount);
     if (0 != iResult)
     {

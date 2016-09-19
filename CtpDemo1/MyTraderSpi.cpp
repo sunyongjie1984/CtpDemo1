@@ -455,7 +455,64 @@ void CTraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
     DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
     if (IsMyOrder(pOrder))
     {
-        cout << "--->>>\tis my order" << endl;
+        DEBUG(CTPDEMO1_DEBUG, "\tis my order");
+        DEBUG(CTPDEMO1_DEBUG, "\tBrokerID = %s", pOrder->BrokerID);
+        DEBUG(CTPDEMO1_DEBUG, "\tInvestorID = %s", pOrder->InvestorID);
+        DEBUG(CTPDEMO1_DEBUG, "\tInstrumentID = %s", pOrder->InstrumentID);
+        DEBUG(CTPDEMO1_DEBUG, "\tOrderRef = %s", pOrder->OrderRef);
+        DEBUG(CTPDEMO1_DEBUG, "\tUserID= %s", pOrder->UserID);
+        DEBUG(CTPDEMO1_DEBUG, "\tOrderPriceType = %c", pOrder->OrderPriceType);
+        DEBUG(CTPDEMO1_DEBUG, "\tDirection = %c", pOrder->Direction);
+        DEBUG(CTPDEMO1_DEBUG, "\tCombOffsetFlag = %s", pOrder->CombOffsetFlag);
+        DEBUG(CTPDEMO1_DEBUG, "\tCombHedgeFlag = %s", pOrder->CombHedgeFlag);
+        DEBUG(CTPDEMO1_DEBUG, "\tLimitPrice = %f", pOrder->LimitPrice);
+        DEBUG(CTPDEMO1_DEBUG, "\tVolumeTotalOriginal = %d", pOrder->VolumeTotalOriginal);
+        DEBUG(CTPDEMO1_DEBUG, "\tTimeCondition = %c", pOrder->TimeCondition);
+        DEBUG(CTPDEMO1_DEBUG, "\tGTDDate = %c", pOrder->GTDDate);
+        DEBUG(CTPDEMO1_DEBUG, "\tVolumeCondition = %c", pOrder->VolumeCondition);
+        DEBUG(CTPDEMO1_DEBUG, "\tMinVolume = %d", pOrder->MinVolume);
+        DEBUG(CTPDEMO1_DEBUG, "\tContingentCondition = %c", pOrder->ContingentCondition);
+        DEBUG(CTPDEMO1_DEBUG, "\tStopPrice = %f", pOrder->StopPrice);
+        DEBUG(CTPDEMO1_DEBUG, "\tForceCloseReason = %c", pOrder->ForceCloseReason);
+        DEBUG(CTPDEMO1_DEBUG, "\tIsAutoSuspend = %d", pOrder->IsAutoSuspend);
+        DEBUG(CTPDEMO1_DEBUG, "\tBusinessUnit= %s", pOrder->BusinessUnit);
+        DEBUG(CTPDEMO1_DEBUG, "\tRequestID = %d", pOrder->RequestID);
+        DEBUG(CTPDEMO1_DEBUG, "\tOrderLocalID= %s", pOrder->OrderLocalID);
+        DEBUG(CTPDEMO1_DEBUG, "\tExchangeID = %s", pOrder->ExchangeID);
+        DEBUG(CTPDEMO1_DEBUG, "\tParticipantID = %s", pOrder->ParticipantID);
+        DEBUG(CTPDEMO1_DEBUG, "\tClientID = %s", pOrder->ClientID);
+        DEBUG(CTPDEMO1_DEBUG, "\tExchangeInstID = %s", pOrder->ExchangeInstID);
+        DEBUG(CTPDEMO1_DEBUG, "\tTraderID = %s", pOrder->TraderID);
+        DEBUG(CTPDEMO1_DEBUG, "\tInstallID = %d", pOrder->InstallID);
+        DEBUG(CTPDEMO1_DEBUG, "\tOrderSubmitStatus = %c", pOrder->OrderSubmitStatus);
+        DEBUG(CTPDEMO1_DEBUG, "\tNotifySequence = %d", pOrder->NotifySequence);
+        DEBUG(CTPDEMO1_DEBUG, "\tTradingDay = %s", pOrder->TradingDay);
+        DEBUG(CTPDEMO1_DEBUG, "\tSettlementID= %d", pOrder->SettlementID);
+        DEBUG(CTPDEMO1_DEBUG, "\tOrderSysID = %s", pOrder->OrderSysID);
+        DEBUG(CTPDEMO1_DEBUG, "\tOrderSource = %c", pOrder->OrderSource);
+        DEBUG(CTPDEMO1_DEBUG, "\tOrderStatus = %c", pOrder->OrderStatus);
+        DEBUG(CTPDEMO1_DEBUG, "\tOrderType = %c", pOrder->OrderType);
+        DEBUG(CTPDEMO1_DEBUG, "\tVolumeTraded = %d", pOrder->VolumeTraded);
+        DEBUG(CTPDEMO1_DEBUG, "\tVolumeTotal= %d", pOrder->VolumeTotal);
+        DEBUG(CTPDEMO1_DEBUG, "\tInsertDate= %s", pOrder->InsertDate);
+        DEBUG(CTPDEMO1_DEBUG, "\tInsertTime= %s", pOrder->InsertTime);
+        DEBUG(CTPDEMO1_DEBUG, "\tActiveTime= %s", pOrder->ActiveTime);
+        DEBUG(CTPDEMO1_DEBUG, "\tSuspendTime= %s", pOrder->SuspendTime);
+        DEBUG(CTPDEMO1_DEBUG, "\tUpdateTime= %s", pOrder->UpdateTime);
+        DEBUG(CTPDEMO1_DEBUG, "\tCancelTime= %s", pOrder->CancelTime);
+        DEBUG(CTPDEMO1_DEBUG, "\tActiveTraderID= %s", pOrder->ActiveTraderID);
+        DEBUG(CTPDEMO1_DEBUG, "\tClearingPartID= %s", pOrder->ClearingPartID);
+        DEBUG(CTPDEMO1_DEBUG, "\tSequenceNo= %d", pOrder->SequenceNo);
+        DEBUG(CTPDEMO1_DEBUG, "\tFrontID= %d", pOrder->FrontID);
+        DEBUG(CTPDEMO1_DEBUG, "\tSessionID= %d", pOrder->SessionID);
+        DEBUG(CTPDEMO1_DEBUG, "\tUserProductInfo= %s", pOrder->UserProductInfo);
+        DEBUG(CTPDEMO1_DEBUG, "\tStatusMsg= %s", pOrder->StatusMsg);
+        DEBUG(CTPDEMO1_DEBUG, "\tUserForceClose= %d", pOrder->UserForceClose);
+        DEBUG(CTPDEMO1_DEBUG, "\tActiveUserID= %s", pOrder->ActiveUserID);
+        DEBUG(CTPDEMO1_DEBUG, "\tBrokerOrderSeq= %d", pOrder->BrokerOrderSeq);
+        DEBUG(CTPDEMO1_DEBUG, "\tRelativeOrderSysID= %s", pOrder->RelativeOrderSysID);
+        DEBUG(CTPDEMO1_DEBUG, "\tZCETotalTradedVolume= %d", pOrder->ZCETotalTradedVolume);
+        DEBUG(CTPDEMO1_DEBUG, "\tIsSwapOrder= %d", pOrder->IsSwapOrder);
         /*
         if (IsTradingOrder(pOrder))
             ReqOrderAction(pOrder);
@@ -465,7 +522,7 @@ void CTraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
     }
     else
     {
-        cout << "--->>>\tnot my order" << endl;
+        DEBUG(CTPDEMO1_DEBUG, "not my order");
     }
 }
 
@@ -473,6 +530,36 @@ void CTraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
 void CTraderSpi::OnRtnTrade(CThostFtdcTradeField *pTrade)
 {
     DEBUG(CTPDEMO1_DEBUG, "Enter Function %s", __FUNCTION__);
+    DEBUG(CTPDEMO1_DEBUG, "\tBrokerID %s", pTrade->BrokerID);
+    DEBUG(CTPDEMO1_DEBUG, "\tInvestorID %s", pTrade->InvestorID);
+    DEBUG(CTPDEMO1_DEBUG, "\tInstrumentID %s", pTrade->InstrumentID);
+    DEBUG(CTPDEMO1_DEBUG, "\tOrderRef %s", pTrade->OrderRef);
+    DEBUG(CTPDEMO1_DEBUG, "\tUserID %s", pTrade->UserID);
+    DEBUG(CTPDEMO1_DEBUG, "\tExchangeID %s", pTrade->ExchangeID);
+    DEBUG(CTPDEMO1_DEBUG, "\tTradeID %s", pTrade->TradeID);
+    DEBUG(CTPDEMO1_DEBUG, "\tDirection %c", pTrade->Direction);
+    DEBUG(CTPDEMO1_DEBUG, "\tOrderSysID %s", pTrade->OrderSysID);
+    DEBUG(CTPDEMO1_DEBUG, "\tParticipantID %s", pTrade->ParticipantID);
+    DEBUG(CTPDEMO1_DEBUG, "\tClientID %s", pTrade->ClientID);
+    DEBUG(CTPDEMO1_DEBUG, "\tTradingRold %c", pTrade->TradingRole);
+    DEBUG(CTPDEMO1_DEBUG, "\tExchangeInstID %s", pTrade->ExchangeInstID);
+    DEBUG(CTPDEMO1_DEBUG, "\tOffsetFlag %c", pTrade->OffsetFlag);
+    DEBUG(CTPDEMO1_DEBUG, "\tHedgeFlag %c", pTrade->HedgeFlag);
+    DEBUG(CTPDEMO1_DEBUG, "\tPrice %f", pTrade->Price);
+    DEBUG(CTPDEMO1_DEBUG, "\tVolume %d", pTrade->Volume);
+    DEBUG(CTPDEMO1_DEBUG, "\tTradeDate %s", pTrade->TradeDate);
+    DEBUG(CTPDEMO1_DEBUG, "\tTradeTime %s", pTrade->TradeTime);
+    DEBUG(CTPDEMO1_DEBUG, "\tTradeType %c", pTrade->TradeType);
+    DEBUG(CTPDEMO1_DEBUG, "\tPriceSource %c", pTrade->PriceSource);
+    DEBUG(CTPDEMO1_DEBUG, "\tTraderID %s", pTrade->TraderID);
+    DEBUG(CTPDEMO1_DEBUG, "\tOrderLocalID %s", pTrade->OrderLocalID);
+    DEBUG(CTPDEMO1_DEBUG, "\tClearingPartID %s", pTrade->ClearingPartID);
+    DEBUG(CTPDEMO1_DEBUG, "\tBusinessUnit %s", pTrade->BusinessUnit);
+    DEBUG(CTPDEMO1_DEBUG, "\tSequenceNo %d", pTrade->SequenceNo);
+    DEBUG(CTPDEMO1_DEBUG, "\tTradingDay %s", pTrade->TradingDay);
+    DEBUG(CTPDEMO1_DEBUG, "\tSettlementID %d", pTrade->SettlementID);
+    DEBUG(CTPDEMO1_DEBUG, "\tBrokerOrderSeq %d", pTrade->BrokerOrderSeq);
+    DEBUG(CTPDEMO1_DEBUG, "\tTradeSource %c", pTrade->TradeSource);
 }
 
 void CTraderSpi::OnFrontDisconnected(int nReason)
